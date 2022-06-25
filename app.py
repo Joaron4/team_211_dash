@@ -17,18 +17,9 @@ server.wsgi_app = WhiteNoise(server.wsgi_app, root='static/')
 
 # Define Dash layout
 def create_dash_layout(app):
-    table_header = [
-        html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
-    ]
-    row1 = html.Tr([html.Td(html.Img(src='https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750', width="100%",height='100%')), html.Td("")])
 
-    row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
-
-    table_body = [html.Tbody([row1,  row4])]
-
-    #----------------------------------
-
-    app.title = "Alcaldía de Bucaramanga" 
+    # Set browser tab title
+    app.title = "Your app title" 
     
     navbar = dbc.Navbar(
         dbc.Container(
@@ -55,7 +46,7 @@ def create_dash_layout(app):
             ]
         ),
         color = "#2EA18C",
-        ClassName='NAVBAR_STYLE',
+        style=NAVBAR_STYLE,
     )
     #------------SIDEBAR-------------------------------
     sidebar = html.Div(
@@ -86,7 +77,7 @@ def create_dash_layout(app):
                             
                         ], 
                             bordered=True,
-                            ClassName= 'SIDEBAR_SQUARES'),
+                            style = SIDEBAR_SQUARES),
                         
                     ),
                     
@@ -115,7 +106,7 @@ def create_dash_layout(app):
                             dbc.NavLink("Homicidios"),
                         ], 
                             bordered=True,
-                            ClassName= 'SIDEBAR_SQUARES'),
+                            style = SIDEBAR_SQUARES),
                         
                     ),
                     
@@ -129,12 +120,12 @@ def create_dash_layout(app):
             html.Br(),
         
         ],
-        className='SIDEBAR_STYLE',
+        style=SIDEBAR_STYLE,
     
     )
     content =html.Div([
-            
-            ], className = 'CONTENT_STYLE')
+            html.Iframe(id='map', srcDoc=open('Bucaramanga.html', 'r').read(), width="600",height='600',className="embed-responsive-item")
+            ], style = CONTENT_STYLE)
 
     app.layout = html.Div([
         dbc.Row(dbc.Col(navbar)),
