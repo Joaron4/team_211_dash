@@ -28,62 +28,7 @@ def create_dash_layout(app):
 
     #----------------------------------
 
-
-    # Build App
-    SIDEBAR_STYLE = {
-        
-        "top": 0,
-        "left": 0,
-        "bottom": 0,
-        "height": "100%",
-        "margin": "auto",
-        "padding": "0px",
-        "margin":"auto",
-        "border": "5px black",
-        "background-color": "#2EA18C",
-    }
-    SIDEBAR_SQUARES={
-        "top": 0,
-        "left": 0,
-        "bottom": 0,
-        "height": "100%",
-        "width": "90%",
-        "margin": "auto",
-        "padding": "10%",
-        "margin":"auto",
-        "border": "5px black",
-        "background-color": "WHITE"
-        
-    }
-    NAVBAR_STYLE = {
-        
-        "top": 0,
-        "left": 0,
-        "bottom": '20%',
-    " height": "45%",
-        "width": "100%",
-        "padding": "1%",
-        "text-color":"white",
-        "background-color": "#2EA18C",
-    }
-
-
-    CONTENT_STYLE = {
-        "margin-left": 0,
-        "margin-right":0,
-        "padding": "5%",
-    }
-
-    TABLE_STYLE = {
-        "margin-left": 0,
-        "margin-right":0,
-        "padding": "5%",
-        "text-color":"#2E7DA1"
-    }
-
-
-    # Set browser tab title
-    app.title = "Your app title" 
+    app.title = "Alcaldía de Bucaramanga" 
     
     navbar = dbc.Navbar(
         dbc.Container(
@@ -110,7 +55,7 @@ def create_dash_layout(app):
             ]
         ),
         color = "#2EA18C",
-        style=NAVBAR_STYLE,
+        ClassName='NAVBAR_STYLE',
     )
     #------------SIDEBAR-------------------------------
     sidebar = html.Div(
@@ -141,7 +86,7 @@ def create_dash_layout(app):
                             
                         ], 
                             bordered=True,
-                            style = SIDEBAR_SQUARES),
+                            ClassName= 'SIDEBAR_SQUARES'),
                         
                     ),
                     
@@ -170,7 +115,7 @@ def create_dash_layout(app):
                             dbc.NavLink("Homicidios"),
                         ], 
                             bordered=True,
-                            style = SIDEBAR_SQUARES),
+                            ClassName= 'SIDEBAR_SQUARES'),
                         
                     ),
                     
@@ -184,12 +129,12 @@ def create_dash_layout(app):
             html.Br(),
         
         ],
-        style=SIDEBAR_STYLE,
+        className='SIDEBAR_STYLE',
     
     )
     content =html.Div([
             
-            ], style = CONTENT_STYLE)
+            ], className = 'CONTENT_STYLE')
 
     app.layout = html.Div([
         dbc.Row(dbc.Col(navbar)),

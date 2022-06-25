@@ -1,0 +1,56 @@
+
+.SIDEBAR_STYLE {
+        
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        margin: auto;
+        padding: 0px;
+        margin:auto;
+        border: 5px black;
+        background-color: #2EA18C;
+    }
+.SIDEBAR_SQUARES{
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        width: 90%;
+        margin: auto;
+        padding: 10%;
+        margin:auto;
+        border: 5px black;
+        background-color: WHITE
+        
+    }
+.NAVBAR_STYLE {
+        
+        top: 0;
+        left: 0;
+        bottom: 20%;
+        height: 45%;
+        width: 100%;
+        padding: 1%;
+        text-color:white;
+        background-color: #2EA18C;
+    }
+
+
+.CONTENT_STYLE{
+        margin-left: 0;
+        margin-right:0;
+        padding: 5%;
+    }
+
+.TABLE_STYLE {
+        margin-left: 0;
+        margin-right:0;
+        padding: 5%;
+        text-color:#2E7DA1
+    }
+
+
+ 
+    
+    
