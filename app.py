@@ -82,8 +82,8 @@ def create_dash_layout(app):
     }
 
 
-    # Set browser tab title
-    app.title = "Your app title" 
+    
+    app.title = "Alcaldía de Bucaramanga" 
     
     navbar = dbc.Navbar(
         dbc.Container(
