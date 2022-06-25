@@ -19,4 +19,4 @@ python-dateutil
 pytz
 retrying
 six
-Werkzeug
+
