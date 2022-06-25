@@ -1,54 +1,17 @@
-# Voila application deployed on Heroku
+# Deploying your Dash app online
 
-This is an example of Voila deployed on Heroku, try it out: https://voila-heroku-demo.herokuapp.com
+1. Setup account on Heroku and download Heroku CLI utility
+2. Navigate to this folder
+3. Commit this folder to Git
+4. 'heroku login' and type in your credentials
+5. 'heroku create -n [YOUR-APP-NAME]' where YOUR-APP-NAME refers to the title of your Dash app
+6. 'heroku git:remote -a [YOUR-APP-GIT-URL]' where YOUR-APP-GIT-URL refers to the Git link returned by 5.
+7. 'git push heroku master' will deploy your app to Heroku
+8. 'heroku ps:scale web=1' will create a Dyno and make your app live
 
-## How to deploy your own?
+If you want to make changes to your app repeat steps 2. 3. and 7.
 
-1. First, create an Heroku account (free account is fine for testing)
+Delete the runtime.txt if you wish to run on Python 2.7.x instead of 3.6.x
 
-2. Install Heroku on your machine: https://devcenter.heroku.com/articles/getting-started-with-python#set-up
-
-2. Clone this repository, or create your own repository that follows the same structure:
-
-```bash
-git clone https://github.com/voila-dashboards/voila-heroku
-cd voila-heroku
-```
-
-3. Create your Notebook and put it in the `notebooks` directory
-
-5. Add the dependencies needed for running your Notebook in the `requirements.txt` file
-
-6. Edit the `Procfile` file by replacing `notebooks/bqplot.ipynb` by the path to your awesome Notebook and `--template=material` to the template you use
-
-7. Commit everything
-
-```bash
-git commit -m "My awesome app on Heroku!"
-```
-
-8. Create the Heroku app:
-
-```bash
-heroku create
-```
-
-9. Now deploy your code:
-
-```bash
-git push heroku master
-```
-
-10. That's it! Easy right? Now you can open your app using:
-
-```bash
-
-heroku open
-```
-
-Note that this last command is only a handy shortcut for opening your browser following the right url, you can also do that manually.
-
-## Extra steps
-
-- You can rename your application on the Heroku website, in the applicaion settings. If you rename it, don't forget to update the remote repository doing `git remote remove heroku && git remote add heroku https://git.heroku.com/your-application-name.git`
-- You can add/remove/update voila command line arguments in the `Procfile` file, _e.g._ you can use the dark theme by adding `--theme=dark`
+Do NOT rename or delete any other file in this folder (except this README) or else your
+app will not setup properly.
