@@ -60,7 +60,7 @@ def create_dash_layout(app):
             ]
         ),
         color = "#2EA18C",
-        style=NAVBAR_STYLE,
+        # style=NAVBAR_STYLE,
     )
     #------------SIDEBAR-------------------------------
     sidebar = html.Div(
@@ -82,7 +82,7 @@ def create_dash_layout(app):
                 [
                     
                     dbc.Col(
-                        dbc.Table([
+                        dbc.Table( [ 
                             dbc.NavLink("Mujeres", href="/", active="exact"),
                             dbc.NavLink("Niños, niñas y adolescentes", href="/page-1", active="exact"),
                             dbc.NavLink("Habitantes de calle"),
@@ -91,7 +91,8 @@ def create_dash_layout(app):
                             
                         ], 
                             bordered=True,
-                            style = SIDEBAR_SQUARES),
+                            id ='SIDEBAR_SQUARES'
+                            ),
                         
                     ),
                     
@@ -120,7 +121,7 @@ def create_dash_layout(app):
                             dbc.NavLink("Homicidios"),
                         ], 
                             bordered=True,
-                            style = SIDEBAR_SQUARES),
+                            id = 'SIDEBAR_SQUARES'),
                         
                     ),
                     
@@ -139,7 +140,7 @@ def create_dash_layout(app):
     )
     content =html.Div([
             
-            ], style = CONTENT_STYLE)
+            ], id = 'CONTENT_STYLE')
 
     app.layout = html.Div([
         dbc.Row(dbc.Col(navbar)),

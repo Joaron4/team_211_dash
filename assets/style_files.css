@@ -1,5 +1,5 @@
 
-.SIDEBAR_STYLE {
+#SIDEBAR_STYLE {
         
         top: 0;
         left: 0;
@@ -11,7 +11,7 @@
         border: 5px black;
         background-color: #2EA18C;
     }
-.SIDEBAR_SQUARES{
+#SIDEBAR_SQUARES{
         top: 0;
         left: 0;
         bottom: 0;
@@ -24,7 +24,7 @@
         background-color: WHITE
         
     }
-.NAVBAR_STYLE {
+#NAVBAR_STYLE {
         
         top: 0;
         left: 0;
@@ -37,7 +37,7 @@
     }
 
 
-.CONTENT_STYLE{
+#CONTENT_STYLE{
         margin-left: 0;
         margin-right:0;
         padding: 5%;
