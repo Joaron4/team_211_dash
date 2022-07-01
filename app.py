@@ -21,58 +21,58 @@ server = app.server
 server.wsgi_app = WhiteNoise(server.wsgi_app, root="static/")
 
 # Define Dash l
-def create_dash_layout(app):
-    NAVBAR_STYLE = {
-        "top": 0,
-        "left": 0,
-        "bottom": "20%",
-        " height": "45%",
-        "width": "100%",
-        "padding": "1%",
-        "text-color": "white",
-        "background-color": "#2EA18C",
-    }
 
-    navbar = dbc.Navbar(
-        dbc.Container(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            html.Img(
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Escudo_de_Bucaramanga.svg/1200px-Escudo_de_Bucaramanga.svg.png",
-                                height="30px",
-                            )
-                        ),
-                        dbc.Col(
-                            dbc.NavbarBrand(
-                                "Alcaldía de Bucaramanga",
-                                style={
-                                    "text-align": "left",
-                                    "text-color": "white",
-                                    "margin": "0px",
-                                },
-                            )
-                        ),
-                    ],
-                    align="left",
-                ),
-                dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
-                dbc.Collapse(
-                    id="navbar-collapse",
-                    is_open=False,
-                    navbar=True,
-                ),
-            ]
-        ),
-        color="#2EA18C",
-        style=NAVBAR_STYLE,
-    )
-    app.layout = dbc.Container(
-        [navbar, dl.plugins.page_container],
-        fluid=True,
-    )
-    return app
+NAVBAR_STYLE = {
+    "top": 0,
+    "left": 0,
+    "bottom": "20%",
+    " height": "45%",
+    "width": "100%",
+    "padding": "1%",
+    "text-color": "white",
+    "background-color": "#2EA18C",
+}
+
+navbar = dbc.Navbar(
+    dbc.Container(
+        [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        html.Img(
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Escudo_de_Bucaramanga.svg/1200px-Escudo_de_Bucaramanga.svg.png",
+                            height="30px",
+                        )
+                    ),
+                    dbc.Col(
+                        dbc.NavbarBrand(
+                            "Alcaldía de Bucaramanga",
+                            style={
+                                "text-align": "left",
+                                "text-color": "white",
+                                "margin": "0px",
+                            },
+                        )
+                    ),
+                ],
+                align="left",
+            ),
+            dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
+            dbc.Collapse(
+                id="navbar-collapse",
+                is_open=False,
+                navbar=True,
+            ),
+        ]
+    ),
+    color="#2EA18C",
+    style=NAVBAR_STYLE,
+)
+app.layout = dbc.Container(
+    [navbar, dl.plugins.page_container],
+    fluid=True,
+)
+
 
 
 # Run flask app

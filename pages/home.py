@@ -1,97 +1,23 @@
 from dash import Dash, callback, html, dcc, dash_table, Input, Output, State, MATCH, ALL
 import dash_bootstrap_components as dbc
-import folium
+import dash
 import json
 import pandas as pd
-import branca
-import geopandas
+from dash_labs.plugins import register_page
 
-Dash.register_page(__name__, path="/")
 
-violencia = pd.read_csv("./data/violencia_clean.csv", encoding="utf-8")
+register_page(__name__, path="/")
 
-barrios = violencia[["barrio", "orden"]].groupby("barrio").count().reset_index()
-
-# color scheme
-min_occ, max_occ = barrios["orden"].quantile([0.01, 0.99]).apply(round, 2)
-
-colormap = branca.colormap.LinearColormap(
-    colors=["#FBE9E7", "#D9CA11", "#D9CA11", "darkred"], vmin=min_occ, vmax=max_occ
-)
-colormap.caption = "Total Casos de violencia intrafamiliar y de género"
-
-barrios_bmanga = geopandas.read_file(
-    "https://raw.githubusercontent.com/Joaron4/team211_datasets/main/Barrios-polygon.geojson",
-    driver="GeoJSON",
-)
-barrios_bmanga_occ = barrios_bmanga.merge(
-    barrios, how="left", left_on="NOMBRE", right_on="barrio"
-)
-barrios_bmanga_occ["orden"] = barrios_bmanga_occ["orden"].fillna(0).astype("int")
-
-m = folium.Map(location=[7.12539, -73.1198], zoom_start=12.5, tiles="OpenStreetMap")
-# def heat_dict(x): #to acces the key in the dict
-#     x=json_file
-#     for i in range(len(x['features'])):
-#         dict_json = x['features'][i]
-#     return dict_json
-def mapa():
-    # ----------------------COLORES MAPA-----------------------------
-    # bmanga_color ={'fillColor': '#00000000', 'color': '#228B22', 'weight': 1.5}
-    style_function = lambda x: {
-        "fillColor": colormap(x["properties"]["orden"]),
-        "color": "black",
-        "weight": 2,
-        "fillOpacity": 0.7,
-        "color": "#228B22",
-        "weight": 1.5,
-    }
-
-    # ----------BUCARAMANGA---------------------------------
-    folium.GeoJson(
-        json.loads(barrios_bmanga_occ.to_json()),
-        style_function=style_function,
-        name="Barrios Bucaramanga",
-        tooltip=folium.GeoJsonTooltip(
-            fields=["Comuna", "NOMBRE", "orden"],
-            aliases=["Comuna", "Barrio:", "Casos"],
-            localize=True,
-        ),
-    ).add_to(m)
-
-    return m
 
 
 table_header = [
-    html.Thead(
-        html.Tr(
-            [
-                html.Th("Principales problemáticas"),
-                html.Th("Principales grupos poblacionales afectados"),
-            ],
-            style={"text-align": "center", "color": "#2E7DA1"},
-        )
-    )
+    html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
-row1 = html.Tr(
-    [
-        html.Td(
-            html.Img(
-                src="https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750",
-                width="100%",
-                height="100%",
-            )
-        ),
-        html.Td(""),
-    ]
-)
-
-bmanga = mapa()
-bmanga.save("Bucaramanga.html")
+row1 = html.Tr([html.Td(html.Img(src='https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750', width="100%",height='100%')), html.Td("")])
 
 row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
 
-table_body = [html.Tbody([row1, row4])]
+table_body = [html.Tbody([row1,  row4])]
 
 # ----------------------------------
 
@@ -272,13 +198,7 @@ sidebar = html.Div(
 )
 content = html.Div(
     [
-        html.Iframe(
-            id="map",
-            srcDoc=open("Bucaramanga.html", "r").read(),
-            width="600",
-            height="600",
-            className="embed-responsive-item",
-        )
+        
     ],
     style=CONTENT_STYLE,
 )
