@@ -8,10 +8,13 @@ from dash_labs.plugins import register_page
 import plotly.offline as py     
 import plotly.express as px 
 import plotly.graph_objects as go
+import json
+bmanga = json.load(open('./data/barrios.geojson','r'))
 
 register_page(__name__, path="/")
 
 violencia = pd.read_csv('./data/violencia_clean.csv')
+df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza']].groupby(['comuna','barrio','def_naturaleza']).size()).rename(columns={0:'count'}).reset_index()
 
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
@@ -129,13 +132,7 @@ sidebar = html.Div(
                 dbc.Col(
                     dbc.Table(
                         [
-                            html.Div( 
-                            dcc.RadioItems(id='SIDEBAR_RADIOS',
-                                    options=[{'label':str(b),'value':b} for b in sorted(violencia['nom_actividad'].unique())],
-                                    value=[b for b in sorted(violencia['nom_actividad'].unique())],
-                                    inputClassName ='btn-check ',
-                                    labelClassName='btn btn-outline-primary '
-                            ),id ='btn-group' )
+                           
                         ],
                         bordered=True,
                         style=SIDEBAR_SQUARES,
@@ -189,12 +186,13 @@ sidebar = html.Div(
                 dbc.Col(
                     dbc.Table(
                         html.Div( 
-                            dcc.RadioItems(id='SIDEBAR_RADIOS',
-                                    options=[{'label':str(b),'value':b} for b in sorted(violencia['def_naturaleza'].unique())],
-                                    value=[b for b in sorted(violencia['def_naturaleza'].unique())],
-                                    inputClassName ='btn-check ',
-                                    labelClassName='btn btn-outline-primary '
-                            ),id ='btn-group' ),
+                            dcc.Dropdown(id="slct_art",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['def_naturaleza'].unique())],
+                            value=[b for b in sorted(df['def_naturaleza'].unique())],
+                            multi=False,
+                            
+                            
+                            )),
                         bordered=True,
                         style=SIDEBAR_SQUARES,
                     ),
@@ -212,9 +210,8 @@ sidebar = html.Div(
 #---------------------MAPA-----------------------
 content = html.Div(
     [
-       dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True},
-                style={'background':'#00FC87','padding-bottom':'2px','padding-left':'2px','height':'100vh'}
-            ) 
+      
+       dcc.Graph(id='my_buc_map', figure={}) 
     ],
     style=CONTENT_STYLE,
 )
@@ -253,11 +250,32 @@ layout = html.Div(
         ),
     ]
 )
-@callback(Output('graph', 'figure'),
-              [Input('nom_actividad', 'value'),
-               Input('def_naturaleza', 'value')])
 
-def update_figure(chosen_activity,chosen_problem):
-    df_sub = violencia[(violencia['nom_actividad'].isin(chosen_activity)) &
-                (violencia['def_naturaleza'].isin(chosen_problem))]
+@callback(
+    [Output(component_id='output_container', component_property='children'),
+     Output(component_id='my_buc_map', component_property='figure')],
+    [Input(component_id='slct_art', component_property='value')]
+)
+def update_graph(option_slctd):
+    print(option_slctd)
+    print(type(option_slctd))
+
+    container = "The Article chosen by user was: {}".format(option_slctd)
+
+   
+
+    dff = df.copy()
+    dff = dff[dff["def_naturaleza"] == option_slctd]
+
+    # Plotly Express
+    fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
+                    locations="barrio", featureidkey= "properties.NOMBRE",
+                    mapbox_style="carto-positron",
+                    center={"lat": 7.12539, "lon": -73.1198},#7.12539, -73.1198
+                    zoom=11.5,
+                    opacity=0.5)
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    return  fig,container
+
 
