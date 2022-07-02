@@ -8,6 +8,7 @@ from dash_labs.plugins import register_page
 import plotly.offline as py     
 import plotly.express as px 
 import plotly.graph_objects as go
+import geopandas
 
 geojson = geopandas.read_file("https://raw.githubusercontent.com/Joaron4/team211_datasets/main/Barrios-polygon.geojson", driver = "GeoJSON")
 
@@ -262,8 +263,4 @@ layout = html.Div(
 def update_figure(chosen_activity,chosen_problem):
     df_sub = violencia[(violencia['nom_actividad'].isin(chosen_activity)) &
                 (violencia['def_naturaleza'].isin(chosen_problem))]
-fig = px.choropleth(violencia, geojson=geojson, color= 'Count of articulo',
-                locations="BARRIO", featureidkey= "properties.NOMBRE",
-                projection="mercator")
-fig.update_geos(fitbounds="locations", visible=False)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
