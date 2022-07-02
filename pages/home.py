@@ -9,6 +9,7 @@ import plotly.offline as py
 import plotly.express as px 
 import plotly.graph_objects as go
 
+geojson = geopandas.read_file("https://raw.githubusercontent.com/Joaron4/team211_datasets/main/Barrios-polygon.geojson", driver = "GeoJSON")
 
 register_page(__name__, path="/")
 
@@ -261,7 +262,7 @@ layout = html.Div(
 def update_figure(chosen_activity,chosen_problem):
     df_sub = violencia[(violencia['nom_actividad'].isin(chosen_activity)) &
                 (violencia['def_naturaleza'].isin(chosen_problem))]
-fig = px.choropleth(dff, geojson=geojson, color= 'Count of articulo',
+fig = px.choropleth(violencia, geojson=geojson, color= 'Count of articulo',
                 locations="BARRIO", featureidkey= "properties.NOMBRE",
                 projection="mercator")
 fig.update_geos(fitbounds="locations", visible=False)
