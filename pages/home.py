@@ -8,9 +8,6 @@ from dash_labs.plugins import register_page
 import plotly.offline as py     
 import plotly.express as px 
 import plotly.graph_objects as go
-import geopandas
-
-geojson = geopandas.read_file("https://raw.githubusercontent.com/Joaron4/team211_datasets/main/Barrios-polygon.geojson", driver = "GeoJSON")
 
 register_page(__name__, path="/")
 
