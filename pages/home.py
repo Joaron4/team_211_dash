@@ -1,14 +1,18 @@
+import csv
 from dash import Dash, callback, html, dcc, dash_table, Input, Output, State, MATCH, ALL
 import dash_bootstrap_components as dbc
-import dash
+
 import json
 import pandas as pd
 from dash_labs.plugins import register_page
+import plotly.offline as py     
+import plotly.express as px 
+import plotly.graph_objects as go
 
 
 register_page(__name__, path="/")
 
-
+violencia = pd.read_csv('./data/violencia_clean.csv')
 
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
@@ -38,13 +42,17 @@ SIDEBAR_SQUARES = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "height": "100%",
-    "width": "90%",
-    "margin": "auto",
-    "padding": "10%",
+    "height": 100,
+    "width": '99%',
+    "padding": "5%",
     "margin": "auto",
     "border": "5px black",
     "background-color": "WHITE",
+    'flex-flow': 'column',
+    "display":"flex",
+    'overflowY': 'auto',
+    'overflowX': 'hidden'
+
 }
 
 
@@ -59,7 +67,9 @@ TABLE_STYLE = {
     "margin-right": 0,
     "padding": "5%",
     "text-color": "#2E7DA1",
+    
 }
+blackbold={'color':'black', 'font-weight': 'bold'}
 
 
 # ------------SIDEBAR-------------------------------
@@ -120,17 +130,20 @@ sidebar = html.Div(
                 dbc.Col(
                     dbc.Table(
                         [
-                            dbc.NavLink("Mujeres", href="/", active="exact"),
-                            dbc.NavLink(
-                                "Niños, niñas y adolescentes",
-                                href="/page-1",
-                                active="exact",
-                            ),
-                            dbc.NavLink("Habitantes de calle"),
-                            dbc.NavLink("Trabajadoras sexuales"),
+                            html.Div( 
+                            dcc.RadioItems(id='SIDEBAR_RADIOS',
+                                    options=[{'label':str(b),'value':b} for b in sorted(violencia['nom_actividad'].unique())],
+                                    value=[b for b in sorted(violencia['nom_actividad'].unique())],
+                                    inputClassName ='btn-check ',
+                                    labelClassName='btn btn-outline-primary '
+                            ),id ='btn-group' )
                         ],
                         bordered=True,
                         style=SIDEBAR_SQUARES,
+                        
+
+                        
+                        
                     ),
                 ),
             ],
@@ -176,12 +189,13 @@ sidebar = html.Div(
             [
                 dbc.Col(
                     dbc.Table(
-                        [
-                            dbc.NavLink("Acoso", href="/", active="exact"),
-                            dbc.NavLink("Violación", href="/page-2", active="exact"),
-                            dbc.NavLink("Abuso sexual"),
-                            dbc.NavLink("Homicidios"),
-                        ],
+                        html.Div( 
+                            dcc.RadioItems(id='SIDEBAR_RADIOS',
+                                    options=[{'label':str(b),'value':b} for b in sorted(violencia['def_naturaleza'].unique())],
+                                    value=[b for b in sorted(violencia['def_naturaleza'].unique())],
+                                    inputClassName ='btn-check ',
+                                    labelClassName='btn btn-outline-primary '
+                            ),id ='btn-group' ),
                         bordered=True,
                         style=SIDEBAR_SQUARES,
                     ),
@@ -196,9 +210,12 @@ sidebar = html.Div(
     ],
     style=SIDEBAR_STYLE,
 )
+#---------------------MAPA-----------------------
 content = html.Div(
     [
-        
+       dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True},
+                style={'background':'#00FC87','padding-bottom':'2px','padding-left':'2px','height':'100vh'}
+            ) 
     ],
     style=CONTENT_STYLE,
 )
@@ -237,3 +254,15 @@ layout = html.Div(
         ),
     ]
 )
+@callback(Output('graph', 'figure'),
+              [Input('nom_actividad', 'value'),
+               Input('def_naturaleza', 'value')])
+
+def update_figure(chosen_activity,chosen_problem):
+    df_sub = violencia[(violencia['nom_actividad'].isin(chosen_activity)) &
+                (violencia['def_naturaleza'].isin(chosen_problem))]
+fig = px.choropleth(dff, geojson=geojson, color= 'Count of articulo',
+                locations="BARRIO", featureidkey= "properties.NOMBRE",
+                projection="mercator")
+fig.update_geos(fitbounds="locations", visible=False)
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})

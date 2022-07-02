@@ -10,7 +10,23 @@
     border: 5px black;
     background-color: #2EA18C;
 }
-
+#SIDEBAR_RADIOS{
+    align-items: center;
+    padding: 1%;
+    margin: 1%;
+}
+.btn-outline-primary{
+    
+    text-align: center;
+    
+    margin: 2px;
+    border-color: black;
+    
+    
+}
+.btn-group{
+    align-items:flex-start;
+}
 #SIDEBAR_SQUARES {
     top: 0;
     left: 0;
