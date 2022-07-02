@@ -14,7 +14,7 @@ bmanga = json.load(open('./data/barrios.geojson','r'))
 register_page(__name__, path="/")
 
 violencia = pd.read_csv('./data/violencia_clean.csv')
-df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza']].groupby(['comuna','barrio','def_naturaleza']).size()).rename(columns={0:'count'}).reset_index()
+df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza','nom_actividad']].groupby(['comuna','barrio','def_naturaleza','nom_actividad']).size()).rename(columns={0:'count'}).reset_index()
 
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
@@ -96,34 +96,17 @@ sidebar = html.Div(
         html.Br(),
         dbc.Row(
             [
-                dbc.Col(
-                    dbc.Col(
-                        html.Img(
-                            src="https://cdn.iconscout.com/icon/free/png-256/team-200-517802.png",
-                            height="40 px",
-                            style={
-                                "margin-left": "30%",
-                                "margin-bottom": "20%",
-                                "margin-top": "0px",
-                            },
-                        ),
-                        width={"size": 3, "order": 5},
-                    )
-                ),
+                
+                    
                 dbc.Col(
                     html.P(
                         "Enfoque poblacional",
-                        style={
-                            "padding": "0px",
-                            "color": "black",
-                            "text-aling": "center",
-                            "margin-bottom ": "0",
-                            "margin-top ": "20%",
-                            "font-size": "0.6 vw",
-                        },
+                        id= 'problematica'
+                        
                     ),
                     width={"size": 9, "order": 1},
                 ),
+                
             ],
             align="center",
         ),
@@ -131,11 +114,14 @@ sidebar = html.Div(
             [
                 dbc.Col(
                     dbc.Table(
-                        [
-                           
-                        ],
-                        bordered=True,
-                        style=SIDEBAR_SQUARES,
+                     html.Div( 
+                            dcc.Dropdown(id="select_ind",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
+                            value=[b for b in sorted(df['nom_actividad'].unique())],
+                            multi=False,
+                            
+                            
+                            ))
                         
 
                         
@@ -150,31 +136,11 @@ sidebar = html.Div(
         html.Br(),
         dbc.Row(
             [
+                
                 dbc.Col(
-                    dbc.Col(
-                        html.Img(
-                            src="https://freesvg.org/img/1552598586.png",
-                            height="50px",
-                            style={
-                                "margin-left": "20%",
-                                "margin-bottom": "20%",
-                                "margin-top": "0px",
-                            },
-                        ),
-                        width={"size": 2, "order": 5},
-                    )
-                ),
-                dbc.Col(
-                    html.P(
-                        "Problemática",
-                        style={
-                            "padding": "0px",
-                            "color": "black",
-                            "text-aling": "center",
-                            "margin-bottom ": "0",
-                            "margin-top ": "20%",
-                            "font-size": "0.6 vw",
-                        },
+                    html.P( 
+                        "Problemática",id ='problematica',
+                        
                     ),
                     width={"size": 9, "order": 1},
                 ),
@@ -184,18 +150,18 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.Col(
+
                     dbc.Table(
                         html.Div( 
-                            dcc.Dropdown(id="slct_art",
+                            dcc.Dropdown(id="select_nat",
                             options=[{'label':str(b),'value':b} for b in sorted(df['def_naturaleza'].unique())],
                             value=[b for b in sorted(df['def_naturaleza'].unique())],
                             multi=False,
                             
                             
-                            )),
-                        bordered=True,
-                        style=SIDEBAR_SQUARES,
-                    ),
+                            ))),
+                        
+                    
                 ),
             ],
             vertical=True,
@@ -255,15 +221,16 @@ layout = html.Div(
 @callback(
     
     Output(component_id='my_buc_map', component_property='figure'),
-    Input(component_id='slct_art', component_property='value')
+    Input(component_id='select_ind', component_property='value'),
+    Input(component_id='select_nat', component_property='value')
 )
-def update_graph(option_slctd):
+def update_graph(ind,nat):
     
 
    
 
     dff = df.copy()
-    dff = dff[dff["def_naturaleza"] == option_slctd]
+    dff = dff[(dff["nom_actividad"] == ind) & (dff["def_naturaleza"] == nat )]
 
     # Plotly Express
     fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',

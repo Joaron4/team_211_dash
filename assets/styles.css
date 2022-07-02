@@ -27,6 +27,12 @@
 .btn-group{
     align-items:flex-start;
 }
+.slct_art{
+    width:50%;
+    text-align: center;
+    height: auto;
+
+}
 #SIDEBAR_SQUARES {
     top: 0;
     left: 0;
@@ -65,3 +71,11 @@
     padding: 5%;
     text-color: #2E7DA1
 }
+.problematica{
+    padding: 0px;
+    align-items: center;
+    color: black;
+    text-align: center;
+    margin-bottom : 0;
+    margin-top : 20%;
+    font-size: 0.6 vw}
