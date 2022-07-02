@@ -210,11 +210,12 @@ sidebar = html.Div(
 #---------------------MAPA-----------------------
 content = html.Div(
     [
-      
-       dcc.Graph(id='my_buc_map', figure={}) 
+        
+        dcc.Graph(id='my_buc_map',figure={}) 
     ],
     style=CONTENT_STYLE,
-)
+),
+html.Div(id='output_container', children=[]),
 
 layout = html.Div(
     [
@@ -252,15 +253,12 @@ layout = html.Div(
 )
 
 @callback(
-    [Output(component_id='output_container', component_property='children'),
-     Output(component_id='my_buc_map', component_property='figure')],
-    [Input(component_id='slct_art', component_property='value')]
+    
+    Output(component_id='my_buc_map', component_property='figure'),
+    Input(component_id='slct_art', component_property='value')
 )
 def update_graph(option_slctd):
-    print(option_slctd)
-    print(type(option_slctd))
-
-    container = "The Article chosen by user was: {}".format(option_slctd)
+    
 
    
 
@@ -271,11 +269,11 @@ def update_graph(option_slctd):
     fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
                     locations="barrio", featureidkey= "properties.NOMBRE",
                     mapbox_style="carto-positron",
-                    center={"lat": 7.12539, "lon": -73.1198},#7.12539, -73.1198
-                    zoom=11.5,
-                    opacity=0.5)
+    center={"lat": 7.12539, "lon": -73.1198},#7.12539, -73.1198
+    zoom=11.5,
+    opacity=0.5)
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    return  fig,container
+    return  fig
 
 
