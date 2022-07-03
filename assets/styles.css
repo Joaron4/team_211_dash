@@ -37,11 +37,11 @@
     top: 0;
     left: 0;
     bottom: 0;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
     height: 100%;
     width: 90%;
-    margin: auto;
-    padding: 10%;
-    margin: auto;
     border: 5px black;
     background-color: WHITE
 }
@@ -50,10 +50,13 @@
 
     top: 0;
     left: 0;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
     bottom: 20%;
     height: 45%;
     width: 100%;
-    padding: 1%;
+    
     text-color: white;
     background-color: #2EA18C;
 }
@@ -71,7 +74,7 @@
     padding: 5%;
     text-color: #2E7DA1
 }
-.problematica{
+#problematica{
     padding: 0px;
     align-items: center;
     color: black;

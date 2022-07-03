@@ -1,13 +1,10 @@
-import csv
-from dash import Dash, callback, html, dcc, dash_table, Input, Output, State, MATCH, ALL
+from dash import  callback, html, dcc, Input, Output, MATCH, ALL
 import dash_bootstrap_components as dbc
 
 import json
 import pandas as pd
-from dash_labs.plugins import register_page
-import plotly.offline as py     
+from dash_labs.plugins import register_page   
 import plotly.express as px 
-import plotly.graph_objects as go
 import json
 bmanga = json.load(open('./data/barrios.geojson','r'))
 
@@ -74,105 +71,7 @@ TABLE_STYLE = {
 blackbold={'color':'black', 'font-weight': 'bold'}
 
 
-# ------------SIDEBAR-------------------------------
-sidebar = html.Div(
-    [
-        html.H2(
-            "Team 211",
-            className="border border-secondary",
-            style={
-                "color": "#2E7DA1",
-                "padding": "5%",
-                "background-color": "white",
-                "textAlign": "center",
-            },
-        ),
-        html.P(
-            "Seleccione uno o más filtros para personalizar su búsqueda",
-            className="lead",
-            style={"color": "white", "padding": "5%", "font-size": "1 vw"},
-        ),
-        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
-        html.Br(),
-        dbc.Row(
-            [
-                
-                    
-                dbc.Col(
-                    html.P(
-                        "Enfoque poblacional",
-                        id= 'problematica'
-                        
-                    ),
-                    width={"size": 9, "order": 1},
-                ),
-                
-            ],
-            align="center",
-        ),
-        dbc.Nav(
-            [
-                dbc.Col(
-                    dbc.Table(
-                     html.Div( 
-                            dcc.Dropdown(id="select_ind",
-                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
-                            value=[b for b in sorted(df['nom_actividad'].unique())],
-                            multi=False,
-                            
-                            
-                            ))
-                        
 
-                        
-                        
-                    ),
-                ),
-            ],
-            vertical=True,
-            pills=True,
-        ),
-        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
-        html.Br(),
-        dbc.Row(
-            [
-                
-                dbc.Col(
-                    html.P( 
-                        "Problemática",id ='problematica',
-                        
-                    ),
-                    width={"size": 9, "order": 1},
-                ),
-            ],
-            align="center",
-        ),
-        dbc.Nav(
-            [
-                dbc.Col(
-
-                    dbc.Table(
-                        html.Div( 
-                            dcc.Dropdown(id="select_nat",
-                            options=[{'label':str(b),'value':b} for b in sorted(df['def_naturaleza'].unique())],
-                            value=[b for b in sorted(df['def_naturaleza'].unique())],
-                            multi=False,
-                            
-                            
-                            ))),
-                        
-                    
-                ),
-            ],
-            vertical=True,
-            pills=True,
-            navbar_scroll=True,
-        ),
-        html.Br(),
-        html.Br(),
-    ],
-    style=SIDEBAR_STYLE,
-)
 #---------------------MAPA-----------------------
 content = html.Div(
     [
@@ -187,7 +86,7 @@ layout = html.Div(
     [
         dbc.Row(
             [
-                dbc.Col(sidebar, width=2, align="left"),
+                
                 dbc.Col(
                     [
                         html.Br(),

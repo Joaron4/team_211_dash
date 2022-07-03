@@ -12,7 +12,7 @@ from whitenoise import WhiteNoise  # for serving static files on Heroku
 import json
 # Instantiate dash app
 violencia = pd.read_csv('./data/violencia_clean.csv')
-bmanga = json.load(open('./data/barrios.geojson','r'))
+df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza','nom_actividad']].groupby(['comuna','barrio','def_naturaleza','nom_actividad']).size()).rename(columns={0:'count'}).reset_index()
 
 app = Dash(
     __name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.themes.FLATLY]
@@ -72,10 +72,125 @@ navbar = dbc.Navbar(
     color="#2EA18C",
     style=NAVBAR_STYLE,
 )
+# ------------SIDEBAR-------------------------------
+sidebar = html.Div(
+    [
+        html.H2(
+            "Team 211",
+            className="border border-secondary",
+            style={
+                "color": "#2E7DA1",
+                "padding": "5%",
+                "background-color": "white",
+                "textAlign": "center",
+            },
+        ),
+        html.P(
+            "Seleccione uno o más filtros para personalizar su búsqueda",
+            className="lead",
+            style={"color": "white", "padding": "5%", "font-size": "1 vw"},
+        ),
+        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
+        html.Br(),
+        dbc.DropdownMenu(
+            [dbc.DropdownMenuItem(dbc.NavLink("Violencia de género", active=True, href="/")),
+             dbc.DropdownMenuItem(dbc.NavLink("crimenes", active=True, href="/crimes"))],
+            label="Problemas",
+            nav=True,
+            className='dropdown-item btn btn-danger'
+        ),
+        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
+        html.Br(),
+        dbc.Row(
+            [
+                
+                    
+                dbc.Col(
+                    html.P(
+                        "Enfoque poblacional",
+                        className= 'problematica'
+                        
+                    ),
+                    width={"size": 9, "order": 1},
+                ),
+                
+            ],
+            align="center",
+        ),
+        dbc.Nav(
+            [
+                dbc.Col(
+                    dbc.Table(
+                     html.Div( 
+                            dcc.Dropdown(id="select_ind",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
+                            value=[b for b in sorted(df['nom_actividad'].unique())],
+                            multi=False,
+                            
+                            
+                            ))
+                        
+
+                        
+                        
+                    ),
+                ),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
+        html.Br(),
+        dbc.Row(
+            [
+                
+                dbc.Col(
+                    html.P( 
+                        "Problemática",className='problematica',
+                        
+                    ),
+                    width={"size": 9, "order": 1},
+                ),
+            ],
+            align="center",
+        ),
+        dbc.Nav(
+            [
+                dbc.Col(
+
+                    dbc.Table(
+                        html.Div( 
+                            dcc.Dropdown(id="select_nat",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['def_naturaleza'].unique())],
+                            value=[b for b in sorted(df['def_naturaleza'].unique())],
+                            multi=False,
+                            
+                            
+                            ))),
+                        
+                    
+                ),
+            ],
+            vertical=True,
+            pills=True,
+            navbar_scroll=True,
+        ),
+        html.Br(),
+        html.Br(),
+    ],
+   id='SIDEBAR_STYLE',  
+)
 app.layout = dbc.Container(
-    [navbar, dl.plugins.page_container],
+    [dbc.Row([
+
+        navbar,
+        dbc.Col( sidebar,width=2,align="left"),
+        dbc.Col( dl.plugins.page_container,align="left")
+    ])],
+    className='dbc',
     fluid=True,
 )
+
 
 
 
