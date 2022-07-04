@@ -174,9 +174,9 @@ app.layout = dbc.Container(
 
         navbar,
         dbc.Col( sidebar,width=3,align="left"),
-        dbc.Col( dl.plugins.page_container,align="left")
+        dbc.Col( dl.plugins.page_container,align="left",className='g-0')
     ])],
-    className='dbc',
+    className='g-0',
     fluid=True,
 )
 
