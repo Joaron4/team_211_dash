@@ -17,7 +17,7 @@ violencia = pd.read_csv('./data/violencia_clean.csv')
 df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza','nom_actividad']].groupby(['comuna','barrio','def_naturaleza','nom_actividad']).size()).rename(columns={0:'count'}).reset_index()
 df1 = df.to_dict()
 table_header = [
-    html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
+    html.Thead(html.Tr([html.Div(id='problematica_text',children=[]), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
 row1 = html.Tr([html.Td(html.Img(id="image_wc", width="100%",height='100%')), html.Td("")])
 
@@ -179,4 +179,11 @@ def make_image(ind):
     img = BytesIO()
     plot_wordcloud(dff['def_naturaleza']).save(img, format='PNG')
     return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
+
+@callback(
+    Output(component_id='problematica_text', component_property='children'),
+    Input(component_id='select_ind', component_property='value'))
+
+def update_output_div(ind):
+    return 'Principales problemáticas que afectan a:'+ str(ind)
 
