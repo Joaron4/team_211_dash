@@ -105,14 +105,14 @@ sidebar = html.Div(
             [
                 
                     
-                dbc.Col(
+                
                     html.P(
                         "Enfoque poblacional",
                         className= 'problematica'
                         
                     ),
-                    width={"size": 9, "order": 1},
-                ),
+                   
+              
                 
             ],
             align="center",
@@ -139,13 +139,13 @@ sidebar = html.Div(
         dbc.Row(
             [
                 
-                dbc.Col(
+                
                     html.P( 
                         "Problemática",className='problematica',
                         
                     ),
-                    width={"size": 9, "order": 1},
-                ),
+                    
+                
             ],
             align="center",
         ),
@@ -173,7 +173,7 @@ app.layout = dbc.Container(
     [dbc.Row([
 
         navbar,
-        dbc.Col( sidebar,width=2,align="left"),
+        dbc.Col( sidebar,width=3,align="left"),
         dbc.Col( dl.plugins.page_container,align="left")
     ])],
     className='dbc',
