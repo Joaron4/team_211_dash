@@ -122,13 +122,8 @@ sidebar = html.Div(
                 dbc.Col(
                     dbc.Table(
                      html.Div( 
-                            dcc.Dropdown(id="select_ind",
-                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
-                            value=[b for b in sorted(df['nom_actividad'].unique())],
-                            multi=False,
-                            
-                            
-                            ))
+                           
+                            id='dropdown-container1', children=[])
                         
 
                         
@@ -159,14 +154,8 @@ sidebar = html.Div(
                 dbc.Col(
 
                     dbc.Table(
-                        html.Div( 
-                            dcc.Dropdown(id="select_nat",
-                            options=[{'label':str(b),'value':b} for b in sorted(df['def_naturaleza'].unique())],
-                            value=[b for b in sorted(df['def_naturaleza'].unique())],
-                            multi=False,
-                            
-                            
-                            ))),
+                        html.Div(  id='dropdown-container2', children=[]
+                            )),
                         
                     
                 ),

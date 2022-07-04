@@ -12,7 +12,7 @@ register_page(__name__, path="/")
 
 violencia = pd.read_csv('./data/violencia_clean.csv')
 df = pd.DataFrame(violencia[['comuna','barrio','def_naturaleza','nom_actividad']].groupby(['comuna','barrio','def_naturaleza','nom_actividad']).size()).rename(columns={0:'count'}).reset_index()
-
+df1 = df.to_dict()
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
@@ -79,11 +79,11 @@ content = html.Div(
         dcc.Graph(id='my_buc_map',figure={}) 
     ],
     style=CONTENT_STYLE,
-),
-html.Div(id='output_container', children=[]),
+)
+ 
 
 layout = html.Div(
-    [
+    [   dcc.Store(id="stored-data", data=df1),
         dbc.Row(
             [
                 
@@ -142,4 +142,24 @@ def update_graph(ind,nat):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return  fig
 
+@callback(Output("dropdown-container1", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_ind",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
+                            value=[b for b in sorted(dff['nom_actividad'].unique())],
+                            multi=False,
+                            
+                            
+                            ),
+@callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_nat",
+                            options=[{'label':str(b),'value':b} for b in sorted(dff['def_naturaleza'].unique())],
+                            value=[b for b in sorted(dff['def_naturaleza'].unique())],
+                            multi=False,
+                            
+                            
+                            ),
 
