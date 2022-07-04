@@ -1,7 +1,10 @@
 from dash import  callback, html, dcc, Input, Output, MATCH, ALL
+from wordcloud import WordCloud
 import dash_bootstrap_components as dbc
-
+import dash.dependencies as dd
+from io import BytesIO
 import json
+import base64
 import pandas as pd
 from dash_labs.plugins import register_page   
 import plotly.express as px 
@@ -16,7 +19,7 @@ df1 = df.to_dict()
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
-row1 = html.Tr([html.Td(html.Img(src='https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750', width="100%",height='100%')), html.Td("")])
+row1 = html.Tr([html.Td(html.Img(id="image_wc", width="100%",height='100%')), html.Td("")])
 
 row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
 
@@ -116,7 +119,13 @@ layout = html.Div(
         ),
     ]
 )
-
+#------------------WORDCLOUD CREATION--------------------
+def plot_wordcloud(data):
+    d = data.values 
+    wc = WordCloud(background_color='white', width=1080, height=360)
+    wc.generate(' '.join(d))
+    return wc.to_image()
+#-------DROPDOWNS CALLBACKS-----------
 @callback(
     
     Output(component_id='my_buc_map', component_property='figure'),
@@ -162,4 +171,12 @@ def populate_dropdownvalues(data):
                             
                             
                             ),
+#-------------WORDCLOUD CALLBACK-------------------
+@callback(dd.Output('image_wc', 'src'), [dd.Input(component_id='select_ind', component_property='value')])
+def make_image(ind):
+    dff = df.copy()
+    dff = dff[(dff["nom_actividad"] == ind)]
+    img = BytesIO()
+    plot_wordcloud(dff['def_naturaleza']).save(img, format='PNG')
+    return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
 
