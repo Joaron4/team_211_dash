@@ -11,7 +11,7 @@ register_page(__name__, path="/crimes")
 
 delitos = pd.read_csv('./data/delitos_final.csv')
 
-df = delitos.groupby(["ano"]).size().to_frame("quantity").reset_index()
+df = delitos.groupby(["ano","barrios_hecho"]).size().to_frame("count").reset_index().rename(columns={"barrios_hecho":'barrio'})
 df1 = df.to_dict()
 
 table_header = [
@@ -111,3 +111,45 @@ layout = html.Div(
         ),
     ]
 )
+
+@callback(
+
+    Output(component_id='my_buc_map', component_property='figure'),
+    Input(component_id='select_ind', component_property='value'),
+    Input(component_id='select_nat', component_property='value')
+)
+def update_graph(ind,nat):   
+    dff = df.copy()
+    dff = dff[(dff["ano"] == ind) & (dff["barrio"] == nat )]
+
+    # Plotly Express
+    fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
+                    locations="barrio", featureidkey= "properties.NOMBRE",
+                    mapbox_style="carto-positron",
+    center={"lat": 7.12539, "lon": -73.1198},
+    zoom=11.5,
+    opacity=0.5)
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    return  fig
+
+@callback(Output("dropdown-container1", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_ind",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['ano'].unique())],
+                            value=[b for b in sorted(dff["ano"].unique())],
+                            multi=False,
+                           
+                           
+                            ),
+@callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_nat",
+                            options=[{'label':str(b),'value':b} for b in sorted(dff['barrio'].unique())],
+                            value=[b for b in sorted(dff['barrio'].unique())],
+                            multi=False,
+                           
+                            
+                            ),
