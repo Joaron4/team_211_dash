@@ -34,6 +34,7 @@ SIDEBAR_STYLE = {
     "border": "5px black",
     "background-color": "#2EA18C",
 }
+
 SIDEBAR_SQUARES = {
     "top": 0,
     "left": 0,
@@ -51,7 +52,6 @@ SIDEBAR_SQUARES = {
 
 }
 
-
 CONTENT_STYLE = {
     "margin-left": 0,
     "margin-right": 0,
@@ -65,9 +65,8 @@ TABLE_STYLE = {
     "text-color": "#2E7DA1",
     
 }
+
 blackbold={'color':'black', 'font-weight': 'bold'}
-
-
 
 #---------------------MAPA-----------------------
 content = html.Div(
@@ -83,7 +82,6 @@ layout = html.Div(
     [   dcc.Store(id="stored-data", data=df1),
         dbc.Row(
             [
-                
                 dbc.Col(
                     [
                         html.Br(),
