@@ -1,12 +1,16 @@
+from matplotlib.pyplot import figure
 from dash import  callback, html, dcc, Input, Output, MATCH, ALL
 import dash_bootstrap_components as dbc
-
+import dash.dependencies as dd
+from io import BytesIO
+import base64
 import json
 import pandas as pd
 from dash_labs.plugins import register_page   
 import plotly.express as px 
-import json
-bmanga = json.load(open('./data/barrios.geojson','r'))
+
+
+bmanga = json.load(open('./data/barrios.geojson','r',encoding="utf-8"))
 register_page(__name__, path="/crimes")
 
 delitos = pd.read_csv('./data/delitos_final.csv')
@@ -20,11 +24,15 @@ lista.insert(0,"TOTAL DELITOS")
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
+
 # row1 =  html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
-
 # row4 = html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
-
 # table_body = [html.Tbody([row1,  row4])]
+
+
+# -------------------------------------
+
+# Build App
 
 SIDEBAR_STYLE = {
     "top": 0,
@@ -74,14 +82,16 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 #---------------------MAPA-----------------------
 content = html.Div(
     [
+    html.P('Seleccione el tipo de delito:', className = 'fix_label', style = {'color': 'black'}),    
         dcc.Dropdown(id="select_conducta",
-                            options=[
-                                    {'label':str(b),'value':b} for b in lista],
-                            value="TOTAL DELITOS",
-                            #value=[b for b in sorted(df['conducta'].unique())],
                             multi=False,
-                            
-                            
+                            clearable = True,
+                            disabled = False,
+                            style = {'display': True},
+                            placeholder = 'Select Option',
+                            value="TOTAL DELITOS",
+                            options=[{'label':str(b),'value':b} for b in lista],
+                            className = 'dcc_compon'
                             ),
         html.Br(),
     	
@@ -103,7 +113,7 @@ content = html.Div(
                id='my_slider'
     ),
 
-        dcc.Graph(id='my_buc_map',figure={}) 
+        dcc.Graph(id='my_crime_map',figure={}) 
     ],
     style=CONTENT_STYLE,
 )
@@ -127,7 +137,7 @@ layout = html.Div(
                                 dbc.Col(content),
                                 dbc.Col(
                                     dbc.Table(
-                                        dcc.Graph(id='the_graph')
+                                        dcc.Graph(id='the_graph', figure={})
                                     ),
                                     style=TABLE_STYLE,
                                 ),
@@ -143,9 +153,11 @@ layout = html.Div(
     ]
 )
 
+#--------------CALLBACKS FOR MAP---------------------
+
 @callback(
 
-    Output(component_id='my_buc_map', component_property='figure'),
+    Output(component_id='my_crime_map', component_property='figure'),
     Input(component_id='my_slider', component_property='value'),
     Input(component_id='select_conducta', component_property='value')
 )
@@ -168,6 +180,8 @@ def update_graph(year,conducta):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     
     return  fig
+
+#--------------CALLBACKS FOR BARCHART---------------------
 
 @callback(
 
