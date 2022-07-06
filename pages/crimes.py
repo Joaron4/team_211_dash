@@ -20,11 +20,11 @@ lista.insert(0,"TOTAL DELITOS")
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
-row1 = html.Tr([html.Td(html.Img(src='https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750', width="100%",height='100%')), html.Td("")])
+# row1 =  html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
 
-row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
+# row4 = html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
 
-table_body = [html.Tbody([row1,  row4])]
+# table_body = [html.Tbody([row1,  row4])]
 
 SIDEBAR_STYLE = {
     "top": 0,
@@ -140,6 +140,9 @@ layout = html.Div(
                 ),
             ]
         ),
+    html.Div([
+        dcc.Graph(id='the_graph')
+    ]),
     ]
 )
 
