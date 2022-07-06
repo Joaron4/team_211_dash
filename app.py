@@ -32,7 +32,8 @@ NAVBAR_STYLE = {
     "bottom": "20%",
     " height": "45%",
     "width": "100%",
-    "padding": "1%",
+    "padding": 
+    "1%",
     "text-color": "white",
     "background-color": "#2EA18C",
 }
@@ -179,13 +180,6 @@ app.layout = dbc.Container(
     className='g-0',
     fluid=True,
 )
-
-
-
-
-
-
-
 
 # Run flask app
 if __name__ == "__main__":
