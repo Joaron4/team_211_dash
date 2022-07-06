@@ -76,7 +76,7 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 content = html.Div(
     [
         
-        dcc.Graph(id='my_buc_map',figure={}) 
+        dcc.Graph(id='my_buc_mapita',figure={}) 
     ],
     style=CONTENT_STYLE,
 )
@@ -117,30 +117,66 @@ layout = html.Div(
     ]
 )
 
-# @callback(
+####
+sidebar = html.Div(
+    [
+        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
+        html.Br(),
+        dbc.Row(
+             [
+                
+                
+                    html.P( 
+                        "Problemática",className='problematica',
+                   
+                   ),
+                    
+                
+            ],
+            align="center",
+        ),
+        dbc.Nav(
+            [
+                dbc.Col(
+
+                    dbc.Table(
+                        html.Div(  id='dropdown-container2', children=[]
+                            )),
+                        
+                    
+                ),
+            ],
+            vertical=True,
+            pills=True,
+            navbar_scroll=True,
+        ),
+        html.Br(),
+    ],
+   id='SIDEBAR_STYLE',  
+)
+###
+@callback(
+    Output(component_id='my_buc_mapita', component_property='figure'),
+    Input(component_id='select_ind', component_property='value'),
+    Input(component_id='select_nat', component_property='value')
+)
+
+def update_graph(ind,nat):
     
-#     Output(component_id='my_buc_map', component_property='figure'),
-#     Input(component_id='select_ind', component_property='value'),
-#     Input(component_id='select_nat', component_property='value')
-# )
-# def update_graph(ind,nat):
-    
 
-   
+    dff = df.copy()
+    dff = dff[(dff["nom_actividad"] == ind) & (dff["def_naturaleza"] == nat )]
 
-#     dff = df.copy()
-#     dff = dff[(dff["nom_actividad"] == ind) & (dff["def_naturaleza"] == nat )]
-
-#     # Plotly Express
-#     fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
-#                     locations="barrio", featureidkey= "properties.NOMBRE",
-#                     mapbox_style="carto-positron",
-#     center={"lat": 7.12539, "lon": -73.1198},#7.12539, -73.1198
-#     zoom=11.5,
-#     opacity=0.5)
-#     fig.update_geos(fitbounds="locations", visible=False)
-#     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-#     return  fig
+    # Plotly Express
+    fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
+                    locations="barrio", featureidkey= "properties.NOMBRE",
+                    mapbox_style="carto-positron",
+    center={"lat": 7.12539, "lon": -73.1198},#7.12539, -73.1198
+    zoom=11.5,
+    opacity=0.5)
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    return  fig
 
 # @callback(Output("dropdown-container1", "children"), Input("stored-data", "data"))
 # def populate_dropdownvalues(data):
@@ -148,9 +184,7 @@ layout = html.Div(
 #     return dcc.Dropdown(id="select_ind",
 #                             options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
 #                             value=[b for b in sorted(dff['nom_actividad'].unique())],
-#                             multi=False,
-                            
-                            
+#                             multi=False,                                
 #                             ),
 # @callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
 # def populate_dropdownvalues(data):
@@ -158,7 +192,5 @@ layout = html.Div(
 #     return dcc.Dropdown(id="select_nat",
 #                             options=[{'label':str(b),'value':b} for b in sorted(dff['def_naturaleza'].unique())],
 #                             value=[b for b in sorted(dff['def_naturaleza'].unique())],
-#                             multi=False,
-                            
-                            
-#                             ),
+#                             multi=False,                            
+#                           )
