@@ -117,44 +117,6 @@ layout = html.Div(
     ]
 )
 
-####
-sidebar = html.Div(
-    [
-        html.Hr(style={"width": "95%", "margin": "auto", "background-color": "black"}),
-        html.Br(),
-        dbc.Row(
-             [
-                
-                
-                    html.P( 
-                        "Problemática",className='problematica',
-                   
-                   ),
-                    
-                
-            ],
-            align="center",
-        ),
-        dbc.Nav(
-            [
-                dbc.Col(
-
-                    dbc.Table(
-                        html.Div(  id='dropdown-container2', children=[]
-                            )),
-                        
-                    
-                ),
-            ],
-            vertical=True,
-            pills=True,
-            navbar_scroll=True,
-        ),
-        html.Br(),
-    ],
-   id='SIDEBAR_STYLE',  
-)
-###
 @callback(
     Output(component_id='my_buc_mapita', component_property='figure'),
     Input(component_id='select_ind', component_property='value'),
@@ -178,19 +140,23 @@ def update_graph(ind,nat):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return  fig
 
-# @callback(Output("dropdown-container1", "children"), Input("stored-data", "data"))
-# def populate_dropdownvalues(data):
-#     dff = pd.DataFrame(data)
-#     return dcc.Dropdown(id="select_ind",
-#                             options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
-#                             value=[b for b in sorted(dff['nom_actividad'].unique())],
-#                             multi=False,                                
-#                             ),
-# @callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
-# def populate_dropdownvalues(data):
-#     dff = pd.DataFrame(data)
-#     return dcc.Dropdown(id="select_nat",
-#                             options=[{'label':str(b),'value':b} for b in sorted(dff['def_naturaleza'].unique())],
-#                             value=[b for b in sorted(dff['def_naturaleza'].unique())],
-#                             multi=False,                            
-#                           )
+@callback(Output("dropdown-container1", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_ind",
+                            options=[{'label':str(b),'value':b} for b in sorted(df['nom_actividad'].unique())],
+                            value=[b for b in sorted(dff['nom_actividad'].unique())],
+                            multi=False,
+                            
+                            
+                            ),
+@callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return dcc.Dropdown(id="select_nat",
+                            options=[{'label':str(b),'value':b} for b in sorted(dff['def_naturaleza'].unique())],
+                            value=[b for b in sorted(dff['def_naturaleza'].unique())],
+                            multi=False,
+                            
+                            
+                            ),
