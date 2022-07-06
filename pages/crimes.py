@@ -127,10 +127,7 @@ layout = html.Div(
                                 dbc.Col(content),
                                 dbc.Col(
                                     dbc.Table(
-                                        table_header + table_body,
-                                        class_name="table table-bordered border-danger",
-                                        bordered=True,
-                                        responsive=True,
+                                        dcc.Graph(id='the_graph')
                                     ),
                                     style=TABLE_STYLE,
                                 ),
@@ -140,9 +137,9 @@ layout = html.Div(
                 ),
             ]
         ),
-    html.Div([
-        dcc.Graph(id='the_graph')
-    ]),
+
+        
+
     ]
 )
 
@@ -169,4 +166,44 @@ def update_graph(year,conducta):
     opacity=0.5)
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    
     return  fig
+
+@callback(
+
+    Output(component_id='the_graph', component_property='figure'),
+    Input(component_id='my_slider', component_property='value'),
+    Input(component_id='select_conducta', component_property='value')
+)
+
+def update_barchart(year,conducta):   
+    dgg = df.copy()
+    if conducta=="TOTAL DELITOS":
+        dgg = dgg.groupby(["ano","barrio"]).sum().reset_index()
+        dgg = dgg[(dgg["ano"] == year)]
+        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+
+        # Plotly Express
+        barchart=px.bar(
+            data_frame=dgg,
+            x=dgg["barrio"],
+            y=dgg['cantidad de delitos'],
+            title="Los cinco barrios con mayor casos de: "+conducta,
+            color=dgg["barrio"],
+            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
+            )
+
+    else:
+        dgg = dgg[(dgg["ano"] == year) & (dgg["conducta"] == conducta )]
+        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+        # Plotly Express
+        barchart=px.bar(
+            data_frame=dgg,
+            x=dgg["barrio"],
+            y=dgg['cantidad de delitos'],
+            title="Los cinco barrios con mayor casos de: "+conducta,
+            color=dgg["barrio"],
+            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
+            )
+
+    return (barchart)
