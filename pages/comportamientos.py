@@ -12,7 +12,7 @@ register_page(__name__, path="/comportamientos")
 
 
 violencia = pd.read_csv('./data/mc_clean.csv')
-df = pd.DataFrame(violencia[['LOCALIDAD','BARRIO_HECHOS','AÑO_NUM','CAPITULO']].groupby(['LOCALIDAD','BARRIO_HECHOS','AÑO_NUM','CAPITULO']).size()).rename(columns={0:'count'}).reset_index()
+df = pd.DataFrame(violencia[['LOCALIDAD','BARRIO_HECHOS','AÑO_NUM','CAPT']].groupby(['LOCALIDAD','BARRIO_HECHOS','AÑO_NUM','CAPT']).size()).rename(columns={0:'count'}).reset_index()
 df1 = df.to_dict()
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
@@ -76,12 +76,16 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 #---------------------MAPA-----------------------
 content = html.Div(
     [
-    
-    	dcc.Dropdown(id="select_chapt",
-                            options=[{'label':str(b),'value':b} for b in sorted(df['CAPITULO'].unique())],
-                            value=[b for b in sorted(df['CAPITULO'].unique())],
-                            multi=False,
-                            
+    	
+    	html.P('Seleccione Capítulo:', className = 'fix_label', style = {'color': 'black'}),
+    	dcc.Dropdown(id = 'select_chapt',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         placeholder = 'Select Option',
+                         options = [{'label':str(b),'value':b} for b in sorted(df['CAPT'].unique())], 
+                         className = 'dcc_compon'
                             
                             ),
         html.Br(),
@@ -124,10 +128,7 @@ layout = html.Div(
                                 dbc.Col(content),
                                 dbc.Col(
                                     dbc.Table(
-                                        table_header + table_body,
-                                        class_name="table table-bordered border-danger",
-                                        bordered=True,
-                                        responsive=True,
+                                        dcc.Graph(id="line_plot"),
                                     ),
                                     style=TABLE_STYLE,
                                 ),
@@ -149,7 +150,7 @@ layout = html.Div(
 def update_graph(year,chapt):
 
     dff = df.copy()
-    dff = dff[(dff["AÑO_NUM"] == year) & (dff["CAPITULO"] == chapt )]
+    dff = dff[(dff["AÑO_NUM"] == year) & (dff["CAPT"] == chapt )]
 
     # Plotly Express
     fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'count',
@@ -161,5 +162,20 @@ def update_graph(year,chapt):
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return  fig
+    
+    
+@callback(
+    Output("line_plot", "figure"), 
+    Input("select_chapt", "value"))
+    
+def update_line_chart(chapter):
+    dff = df.copy()
+    dff_sum = dff.groupby(['LOCALIDAD', 'AÑO_NUM','CAPT'], as_index=False)['count'].sum()
+    fig = px.line(dff_sum[dff_sum["CAPT"] == chapter], 
+        x="AÑO_NUM", y="count", color='LOCALIDAD',
+        title = chapter) 
+    return fig    
+    
+    
     
 
