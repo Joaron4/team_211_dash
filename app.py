@@ -32,8 +32,7 @@ NAVBAR_STYLE = {
     "bottom": "20%",
     " height": "45%",
     "width": "100%",
-    "padding": 
-    "1%",
+    "padding": "1%",
     "text-color": "white",
     "background-color": "#2EA18C",
 }
