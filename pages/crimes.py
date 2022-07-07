@@ -7,7 +7,7 @@ import base64
 import json
 import pandas as pd
 from dash_labs.plugins import register_page
-from sidebar import create_sidebar_crimes
+from sidebar import create_sidebar
 import plotly.express as px 
 
 
@@ -43,7 +43,7 @@ table_body = [html.Tbody([row1, row4])]
 
 #---------SIDEBAR-----------------------
 
-sidebar = create_sidebar_crimes('select_conducta',"select_edad","select_genero")
+sidebar = create_sidebar('select_conducta',"select_edad","select_genero")
 
 
 # -------------------------------------
