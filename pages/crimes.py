@@ -8,7 +8,7 @@ import plotly.express as px
 import json
 from sidebar import create_sidebar
 
-sidebar = create_sidebar("drop_container_crimes1", "drop_container_crimes2")
+
 register_page(__name__, path="/crimes")
 # ---------preparing the dataset------------------------------
 delitos = pd.read_csv("./data/delitos_clean.csv", encoding="utf-8")
@@ -18,6 +18,7 @@ delitos_group = (
     .reset_index()
 )
 delitos1 = delitos_group.to_dict()
+sidebar = create_sidebar("drop_container_crimes1", "drop_container_crimes2")
 # ---------------------------LAYOUT-------------------------------
 layout = html.Div(
     [
