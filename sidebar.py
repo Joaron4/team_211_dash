@@ -16,26 +16,47 @@ def create_sidebar(id1, id2=None, id3=None):
     third_id = html.Div()
 
     if id2 != None:
-        
-        title_second_id= dbc.Row(
-                [
-                    html.P(
-                        "Problemática",
-                        className="problematica",
-                    ),
-                ],
-                align="center",
-            )
-        second_id = dbc.Nav(
-                [
-                    dbc.Col(
-                        dbc.Table(html.Div(id=id2, children=[])),
-                    ),
-                ],
-                vertical=True,
-                pills=True,
-                navbar_scroll=True,
-            )
+        print('---------->',__name__)
+        if id2 == 'select_edad':
+            title_second_id= dbc.Row(
+                    [
+                        html.P(
+                            "Por edad de la victima",
+                            className="problematica",
+                        ),
+                    ],
+                    align="center",
+                )
+            second_id = dbc.Nav(
+                    [
+                        dbc.Col(
+                            dbc.Table(html.Div(id=id2, children=[])),
+                        ),
+                    ],
+                    vertical=True,
+                    pills=True,
+                    navbar_scroll=True,
+                )
+        else:
+            title_second_id= dbc.Row(
+                    [
+                        html.P(
+                            "Problemática",
+                            className="problematica",
+                        ),
+                    ],
+                    align="center",
+                )
+            second_id = dbc.Nav(
+                    [
+                        dbc.Col(
+                            dbc.Table(html.Div(id=id2, children=[])),
+                        ),
+                    ],
+                    vertical=True,
+                    pills=True,
+                    navbar_scroll=True,
+                )
     
     if id3 != None:
         
