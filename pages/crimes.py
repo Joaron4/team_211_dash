@@ -6,7 +6,8 @@ from io import BytesIO
 import base64
 import json
 import pandas as pd
-from dash_labs.plugins import register_page   
+from dash_labs.plugins import register_page
+from sidebar import create_sidebar_crimes
 import plotly.express as px 
 
 
@@ -28,6 +29,10 @@ table_header = [
 # row1 =  html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
 # row4 = html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
 # table_body = [html.Tbody([row1,  row4])]
+
+#---------SIDEBAR-----------------------
+
+sidebar = create_sidebar_crimes('select_conducta')
 
 
 # -------------------------------------
@@ -83,16 +88,7 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 content = html.Div(
     [
     html.P('Seleccione el tipo de delito:', className = 'fix_label', style = {'color': 'black'}),    
-        dcc.Dropdown(id="select_conducta",
-                            multi=False,
-                            clearable = True,
-                            disabled = False,
-                            style = {'display': True},
-                            placeholder = 'Select Option',
-                            value="TOTAL DELITOS",
-                            options=[{'label':str(b),'value':b} for b in lista],
-                            className = 'dcc_compon'
-                            ),
+        
         html.Br(),
     	
     	dcc.Slider(2010, 2021, 1,
@@ -120,9 +116,10 @@ content = html.Div(
  
 
 layout = html.Div(
-    [   dcc.Store(id="stored-data", data=df1),
+    [   dcc.Store(id="stored-data_mc", data=df1),
         dbc.Row(
             [
+                dbc.Col(sidebar, width=3, align="left"),
                 dbc.Col(
                     [
                         html.Br(),
@@ -152,6 +149,25 @@ layout = html.Div(
 
     ]
 )
+
+#-------------CALLBACKS FOR SIDEBAR-------------------
+
+@callback(Output("select_conducta", "children"), Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return (
+        dcc.Dropdown(id="select_conducta",
+                            multi=False,
+                            clearable = True,
+                            disabled = False,
+                            style = {'display': True},
+                            placeholder = 'Select Option',
+                            value="TOTAL DELITOS",
+                            options=[{'label':str(b),'value':b} for b in lista],
+                            className = 'dcc_compon'
+                            ),
+    )
+
 
 #--------------CALLBACKS FOR MAP---------------------
 
