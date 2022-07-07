@@ -83,6 +83,7 @@ navbar = dbc.Navbar(
 )
 
 
+
 app.layout = dbc.Container(
     [
         dbc.Row(
