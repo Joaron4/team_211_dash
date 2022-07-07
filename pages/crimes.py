@@ -19,8 +19,11 @@ delitos = pd.read_csv('./data/delitos_final.csv')
 df = delitos.groupby(["barrios_hecho","ano","conducta","genero","curso_de_vida"]).size().to_frame("cantidad de delitos").reset_index().rename(columns={"barrios_hecho":'barrio'})
 df1 = df.to_dict()
 
-lista = sorted(df['conducta'].unique())
-lista.insert(0,"TOTAL DELITOS")
+
+lista_genero = ["FEMENINO","MASCULINO"]
+lista_edad = ["01. Primera infancia","02. Infancia","03. Adolescencia","04. Jovenes","05. Adultez","06. Persona Mayor"]
+lista_conducta = sorted(df['conducta'].unique())
+lista_conducta.insert(0,"TOTAL DELITOS")
 
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
@@ -32,7 +35,7 @@ table_header = [
 
 #---------SIDEBAR-----------------------
 
-sidebar = create_sidebar_crimes('select_conducta')
+sidebar = create_sidebar_crimes('select_conducta',"select_variable")
 
 
 # -------------------------------------
@@ -163,7 +166,7 @@ def populate_dropdownvalues(data):
                             style = {'display': True},
                             placeholder = 'Select Option',
                             value="TOTAL DELITOS",
-                            options=[{'label':str(b),'value':b} for b in lista],
+                            options=[{'label':str(b),'value':b} for b in lista_conducta],
                             className = 'dcc_compon'
                             ),
     )
