@@ -98,13 +98,15 @@ body {
     margin: 0;
 }
 
-.barplot_barrios {
-    width: 200;
-    height: 200;
-}
+
 
 .my_buc_map {
     width: 60%;
     height: 60%;
 
+}
+
+#subtitle {
+    text-align: center;
+    color: #2E7DA1;
 }

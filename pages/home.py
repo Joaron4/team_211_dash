@@ -15,7 +15,9 @@ from sidebar import create_sidebar
 #----------------GEOJSON-------------------
 bmanga = json.load(open("./data/barrios.geojson", "r", encoding="utf-8"))
 
-problems = ['estudiante', 'fuerza publica', 'líder cívico', 'maestro', 'ninguna', 'otro', 'persona dedicada al cuidado del hogar', 'persona en situación de prostitución', 'persona que cuida a otros', 'reciclador', 'servidor publico', 'trabajadora domestica']
+individuals = ['estudiante', 'fuerza publica', 'líder cívico', 'maestro', 'ninguna', 'otro', 'persona dedicada al cuidado del hogar', 'persona en situación de prostitución', 'persona que cuida a otros', 'reciclador', 'servidor publico', 'trabajadora domestica']
+problems = ['acoso sexual', 'abuso sexual',  'actos sexuales violencia', 'explotacion sexual, comercial niños, adolescentes', 'negligencia y abandono', 'otros actos sexuales', 'violacion', 'violencia fisica', 'violencia psicologica']
+
 register_page(__name__, path="/")
 #-----------------DATASETS-----------------
 violencia = pd.read_csv("./data/violencia_clean.csv")
@@ -140,9 +142,17 @@ blackbold = {"color": "black", "font-weight": "bold"}
 
 
 # ---------------------MAPA-----------------------
-content = html.Div(
-
-    [dcc.Graph(id="my_buc_map", figure=default_map())],
+content = html.Div([
+    dbc.Row([
+        dbc.Row(dcc.Graph(id="my_buc_map", figure=default_map())),
+        dbc.Row([
+            html.Br(),
+            html.Div(id="description_title_text",style={"textAlign": "center", "color": "#2E7DA1"})
+        
+            ])
+        
+        ])
+   ],
 
     style=CONTENT_STYLE,
 )
@@ -322,7 +332,7 @@ def make_image(ind):
         img = BytesIO()
         plot_wordcloud(dff["def_naturaleza"]).save(img, format="PNG")
         return "data:image/png;base64,{}".format(base64.b64encode(img.getvalue()).decode())
-    elif ind not in problems:
+    elif ind not in individuals:
         dff = df.copy()
         img = BytesIO()
         plot_wordcloud(dff["def_naturaleza"]).save(img, format="PNG")
@@ -342,7 +352,7 @@ def make_image(ind):
 )
 def update_output_div(ind,nat):
     
-    if ind not in problems:
+    if ind not in individuals:
         return html.H5('Principales problemáticas Bucaramanga')
     elif ind == 'Todos los enfoques':
         return html.H5('Principales problemáticas Bucaramanga')
@@ -350,4 +360,20 @@ def update_output_div(ind,nat):
         return html.H5('Principales problemáticas Bucaramanga')
     else:
         return html.H5("Principales problemáticas que afectan al enfoque poblacional: " + str(ind))
+@callback(
+    Output(component_id="description_title_text", component_property="children"),
+    Input(component_id="select_ind", component_property="value"),
+    Input(component_id="select_nat", component_property="value"),
+)
+def update_output_div(ind,nat):
+    
+    if nat not in problems:
+        return html.H3("Alerta temprana")
+    elif ind == 'Todos los enfoques':
+        return html.H3("Alerta temprana")
+    elif nat== 'Todas las problemáticas':
+        return html.H3("Alerta temprana")
+    else:
+        return html.H3(str(nat).capitalize())
 
+#html.H3("Bucaramanga")

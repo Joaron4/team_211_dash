@@ -9,12 +9,15 @@ def create_sidebar(id1, id2=None, id3=None):
     arg1(id1): the callback dropdown id
     arg1(id2): the callback dropdown id
     return sidebar"""
-
+    first_title= html.Div()
     title_second_id= html.Div()
     second_id = html.Div()
     tittle_third_id = html.Div()
     third_id = html.Div()
-
+    if id1 == 'select_conducta':
+        first_title= html.P("Por tipo de Delitos", className="problematica")
+    else:
+        first_title= html.P("Enfoque poblacional", className="problematica")
     if id2 != None:
         print('---------->',__name__)
         if id2 == 'select_edad':
@@ -127,7 +130,7 @@ def create_sidebar(id1, id2=None, id3=None):
             html.Br(),
             dbc.Row(
                 [
-                    html.P("Por tipo de Delitos", className="problematica"),
+                   first_title,
                 ],
                 align="center",
             ),
