@@ -34,6 +34,7 @@ def create_sidebar(id1, id2=None, id3=None):
                 pills=True,
                 navbar_scroll=True,
             )
+    
     return html.Div(
         [
             html.H2(
