@@ -25,7 +25,7 @@ row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
 table_body = [html.Tbody([row1,  row4])]
 
 # ----------SIDEBAR------------------------
-sidebar = create_sidebar('select_chapt1', 'loqeusea')
+sidebar = create_sidebar('select_chapt1')
 
 # Build App
 SIDEBAR_STYLE = {
