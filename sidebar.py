@@ -201,10 +201,12 @@ def create_sidebar_crimes(id1, id2, id3):
                     dbc.DropdownMenuItem(dbc.NavLink("Habitantes de calle", active=True, href="/chc"))
 
                 ],
-                label="Problemas",
+                label="Problemas alerta temprana",
                 nav=True,
-                className="dropdown-item btn btn-danger",
+                toggle_style={"color":"black","text-align":"center"}
+                
             ),
+            html.Br(),
             html.Hr(
                 style={"width": "95%", "margin": "auto", "background-color": "black"}
             ),
