@@ -1,50 +1,57 @@
-html,body {
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
+
 #SIDEBAR_STYLE {
 
     top: 0;
     left: 0;
     bottom: 0;
-    height: 100%;
+    height: auto;
     margin: 0;
     padding: 0px;
-    overflow-x:hidden;
+    overflow-x: hidden;
     border: 5px black;
     background-color: #2EA18C;
 }
-#SIDEBAR_RADIOS{
+
+#SIDEBAR_RADIOS {
     align-items: center;
     padding: 1%;
     margin: 1%;
 }
-.btn-outline-primary{
-    
+
+.btn-outline-primary {
+
     text-align: center;
-    
+
     margin: 2px;
     border-color: black;
-    
-    
+
+
 }
-.btn-group{
-    align-items:flex-start;
+
+.btn-group {
+    align-items: flex-start;
 }
-.slct_art{
-    width:50%;
+
+.slct_art {
+    width: 50%;
     text-align: center;
     height: auto;
 
 }
+
 #SIDEBAR_SQUARES {
     top: 0;
     left: 0;
     bottom: 0;
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
     height: 100%;
     width: 90%;
     border: 5px black;
@@ -55,13 +62,13 @@ html,body {
 
     top: 0;
     left: 0;
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
     bottom: 20%;
     height: 45%;
     width: 100%;
-    
+
     text-color: white;
     background-color: #2EA18C;
 }
@@ -73,17 +80,30 @@ html,body {
     padding: 5%;
 }
 
-.TABLE_STYLE {
-    margin-left: 0;
-    margin-right: 0;
+#TABLE_STYLE {
     padding: 5%;
+    margin-right: 10%;
     text-color: #2E7DA1
 }
-#problematica{
+
+#problematica {
     padding: 0px;
     align-items: center;
     color: black;
     text-align: center;
-    margin-bottom : 0;
-    margin-top : 20%;
-    font-size: 0.6 vw}
+    margin-bottom: 0;
+    margin-top: 20%;
+    font-size: 0.6 vw
+}
+
+.problematica_text {
+    width: 95%;
+    height: 95%;
+    padding: 0;
+    margin: 0;
+}
+
+.barplot_barrios {
+    width: inherit;
+    height: inherit;
+}
