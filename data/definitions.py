@@ -1,0 +1,39 @@
+from email.policy import default
+
+
+definition= {'acoso sexual':'El que en beneficio suyo o de un tercero y valiéndose de su superioridad manifiesta o relaciones de autoridad o de poder, edad, sexo, posición laboral, social, familiar o económica, acose, persiga, hostigue o asedie física o verbalmente, con fines sexuales no consentidos, a otra persona, incurrirá en prisión de uno (1) a tres (3) años',
+            'actos sexuales violencia' :'El asalto sexual es definido por la OPS como “cualquier acto de naturaleza sexual no deseado como besos, caricias, sexo oral o anal, penetración vaginal, que es impuesto a una persona”10. En la legislación colombiana la violencia es la característica primordial de los delitos contenidos en el capítulo “De la Violación” del Código Penal. En este sentido, la Jurisprudencia de la Corte Suprema de Justicia establece que para efectos de los delitos contra la libertad sexual, se entiende por violencia la fuerza, el constreñimiento, la presión física o psíquica-intimidación o amenaza que “el agente despliega sobre la víctima para hacer desaparecer o reducir sus posibilidades de oposición o resistencia a la agresión que ejecuta /n -tomado de:https://encolombia.com/medicina/materialdeconsulta/protocolo-vsexual/resolucion459-4/',
+            'abuso sexual':'Teniendo en cuenta la Jurisprudencia de la Corte Suprema de Justicia12 el delito sexual abusivo tiene que ver con el aprovechamiento, por parte del sujeto activo del delito o agresor, de circunstancias que lo ubican en una situación ventajosa frente a la víctima. Estas circunstancias que le dan ventaja al agresor ante la vulnerabilidad preexistente en la víctima, pueden ser del orden de la “superioridad manifiesta” o las relaciones de autoridad dadas por la edad (adulto agresor, víctima menor de 14 años); poder o autoridad (jefe, maestro, médico, sacerdote, pastor, funcionario público, militar, etc.); incapacidad física o psicológica de la víctima, entre otras. La característica de esta forma de violencia es el aprovechamiento de la condición de ventaja o de la condición de vulnerabilidad de la víctima como mecanismo utilizado por el agresor para cometer el delito sexual. \n -tomado de:https://encolombia.com/medicina/materialdeconsulta/protocolo-vsexual/resolucion459-4/',
+            'explotacion sexual, comercial niños, adolescentes':'La trata de personas es una manifestación contemporánea de esclavitud que va en detrimento de la dignidad humana al equipar a los seres humanos a la condición de objetos y someterlos a diferentes formas de explotación y violencia. El delito se configura cuando el agresor capta, es decir, atrae a alguien, en este caso, la víctima (por ejemplo, con una oferta, un aviso clasificado, etc.), con la intención de trasladarle o le traslada (dentro o fuera de su ciudad, departamento, país) y, finalmente, la acoge con la finalidad de explotarla sexualmente. Este delito puede tener como víctimas tanto personas adultas como niñas niños y adolescentes, y el consentimiento de la víctima no constituye un factor que exima de responsabilidad penal al agresor (puesto que ninguna persona puede consentir su propia explotación), ni si la víctima era consciente o no de la finalidad para la cual se la captaba. \n -tomado de:https://encolombia.com/medicina/materialdeconsulta/protocolo-vsexual/resolucion459-4/',
+            'negligencia y abandono':'Es el maltrato omisivo que se daría cuando al niño se le deja en situación de abandono o descuido que puede afectar su vida o su salud. \n - Sentencia C-397/10',
+            'otros actos sexuales':'La OMS y OPS (2003) definen la violencia sexual como “todo acto sexual, la tentativa de consumar un acto sexual, los comentarios o insinuaciones sexuales no deseados, o las acciones para comercializar o utilizar de cualquier otro modo la sexualidad de una persona”9. Es necesario aclarar que no todas las formas en que se manifiesta la violencia sexual son delitos, aunque la mayoría de ellas han sido recogidas por el Código Penal colombiano. \n -tomado de:https://encolombia.com/medicina/materialdeconsulta/protocolo-vsexual/resolucion459-4/',
+            'violacion':'A partir de lo mencionado, la violación es una forma de violencia sexual en la que el agresor utiliza la fuerza o la amenaza de usarla como mecanismo para realizar cualquier tipo de acto sexual con la víctima. En la violación, las víctimas pueden ser de cualquier edad o sexo, puesto que lo que la determina es el mecanismo utilizado por el agresor para someter a la víctima. El Código Penal incluye en el mencionado capítulo “De la Violación” conductas tales como el acceso carnal violento, los actos sexuales violentos y el acceso carnal o el acto sexual cometido sobre una persona a la que el agresor ha puesto en una situación de incapacidad de resistir el acto (a través del uso de narcóticos, golpes, entre otros, que lleven a la víctima a perder el conocimiento o no comprender lo que ocurre a su alrededor).\n -tomado de:https://encolombia.com/medicina/materialdeconsulta/protocolo-vsexual/resolucion459-4/',
+            'violencia fisica':'''Es toda acción a través del uso de la fuerza física, la cual puede causar dolor, malestar, lesiones,
+daños a la salud, o al desarrollo del niño, niña o adolescente; la violencia física se puede ejercer a través de:
+Manos o con cualquier parte del cuerpo: Cachetadas, nalgadas, pellizcos, puñetazos, patadas, pisones, puños,
+empujones, mordiscos, zarandeo, coscorrones, rasguños, jalón de pelo, jalón de orejas, asfixiar, dar puntapiés,
+otros. Objetos: Palos, correas, cables, pantuflas, cigarrillos, planchas, zapato, azote, vara. Armas: cuchillos,
+puñales, pistolas. Sustancias, agentes químicos u objetos que producen quemaduras: agua o líquidos hirviendo,
+ácido. Otras formas: ahogamiento, ingesta forzosa, obligarlos a asumir posturas incomodas. \n -ICBF''',
+            'violencia psicologica':"""Es toda acción u omisión destinada a degradar, discriminar o controlar las acciones,
+comportamientos, creencias y decisiones de los niños, niñas y adolescentes, a través de formas como: humillar,
+rechazar, aterrorizar, aislar, ser permisivos, instrumentalizar o cualquier otra conducta que implique un perjuicio
+en la salud mental, o el desarrollo personal se evidencia de la siguiente manera: Rechazar o humillar, Aterrorizar,
+Aislar, Permisividad, Restricción de la autonomía, sobre exigencia, Instrumentalización en conflictos entre las
+figuras parentales, Exposición a situaciones de violencia de pareja o entre miembros de la unidad convivencia"""}
+
+default_definition = """De conformidad con el Decreto 2124 de 2017, la Defensoría del Pueblo, a través del Sistema de
+Alertas Tempranas advierte oportunamente los riesgos y amenazas que se ciernen contra los
+derechos a la vida, a la integridad, libertad y seguridad personal, libertades civiles y políticas
+en el marco del conflicto armado, violencia sociopolítica o por las actividades de organizaciones
+criminales, con el fin de contribuir al desarrollo e implementación de estrategias de prevención
+temprana por parte de las autoridades, así como al desarrollo de capacidades sociales para la
+autoprotección.
+De acuerdo con el Decreto citado, dentro de la observancia de posibles escenarios de violaciones
+masivas a los derechos humanos, el Sistema de Alertas Tempranas debe advertir sobre riesgos
+derivados o conexos de las dinámicas del conflicto armado. La observancia del Conflicto Armado
+No Internacional (CANI) le ha permitido a la Defensoría del Pueblo percibir recientes
+transformaciones en las dinámicas de violencia que lo configuran, identificando a los grupos de
+criminalidad como perpetradores de conductas vulneratorias y posibles violaciones masivas a
+los derechos humanos de población civil, especialmente en entornos urbanos, como es el caso
+del Área Metropolitana de Bucaramanga."""

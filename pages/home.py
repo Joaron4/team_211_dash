@@ -12,6 +12,8 @@ import plotly.express as px
 import json
 
 from sidebar import create_sidebar
+from data.definitions import definition, default_definition
+
 #----------------GEOJSON-------------------
 bmanga = json.load(open("./data/barrios.geojson", "r", encoding="utf-8"))
 
@@ -147,7 +149,8 @@ content = html.Div([
         dbc.Row(dcc.Graph(id="my_buc_map", figure=default_map())),
         dbc.Row([
             html.Br(),
-            html.Div(id="description_title_text",style={"textAlign": "center", "color": "#2E7DA1"})
+            html.Div(id="description_title_text",style={"textAlign": "center", "color": "#2E7DA1"}),
+            html.Div(html.P(default_definition),id="description_text",)
         
             ])
         
@@ -375,5 +378,20 @@ def update_output_div(ind,nat):
         return html.H3("Alerta temprana")
     else:
         return html.H3(str(nat).capitalize())
+@callback(
+    Output(component_id="description_text", component_property="children"),
+    Input(component_id="select_ind", component_property="value"),
+    Input(component_id="select_nat", component_property="value"),
+)
+def update_output_div(ind,nat):
+    
+    if nat not in definition:
+        return html.P(default_definition)
+    elif ind == 'Todos los enfoques':
+        return html.P(default_definition)
+    elif nat== 'Todas las problemáticas':
+        return html.P(default_definition)
+    else:
+        return html.P(str(definition[nat]).capitalize())
 
 #html.H3("Bucaramanga")
