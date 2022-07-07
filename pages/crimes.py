@@ -16,7 +16,7 @@ register_page(__name__, path="/crimes")
 
 delitos = pd.read_csv('./data/delitos_final.csv')
 
-df = delitos.groupby(["ano","barrios_hecho","conducta"]).size().to_frame("cantidad de delitos").reset_index().rename(columns={"barrios_hecho":'barrio'})
+df = delitos.groupby(["barrios_hecho","ano","conducta","genero","curso_de_vida"]).size().to_frame("cantidad de delitos").reset_index().rename(columns={"barrios_hecho":'barrio'})
 df1 = df.to_dict()
 
 lista = sorted(df['conducta'].unique())
