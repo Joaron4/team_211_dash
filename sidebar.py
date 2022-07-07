@@ -16,6 +16,8 @@ def create_sidebar(id1, id2=None, id3=None):
     third_id = html.Div()
     if id1 == 'select_conducta':
         first_title= html.P("Por tipo de Delitos", className="problematica")
+    elif id1 == 'select_gender':
+        first_title= html.P("Seleccione género: ", className="problematica")
     else:
         first_title= html.P("Enfoque poblacional", className="problematica")
     if id2 != None:
@@ -25,6 +27,26 @@ def create_sidebar(id1, id2=None, id3=None):
                     [
                         html.P(
                             "Por edad de la victima",
+                            className="problematica",
+                        ),
+                    ],
+                    align="center",
+                )
+            second_id = dbc.Nav(
+                    [
+                        dbc.Col(
+                            dbc.Table(html.Div(id=id2, children=[])),
+                        ),
+                    ],
+                    vertical=True,
+                    pills=True,
+                    navbar_scroll=True,
+                )
+        elif id2 == 'select_kind':
+            title_second_id= dbc.Row(
+                    [
+                        html.P(
+                            "Seleccione aspecto: ",
                             className="problematica",
                         ),
                     ],
@@ -62,8 +84,8 @@ def create_sidebar(id1, id2=None, id3=None):
                 )
     
     if id3 != None:
-        
-        tittle_third_id= dbc.Row(
+        if id3 == 'select_genero':
+            tittle_third_id= dbc.Row(
                 [
                     html.P(
                         "Por género de la victima",
@@ -71,8 +93,8 @@ def create_sidebar(id1, id2=None, id3=None):
                     ),
                 ],
                 align="center",
-            )
-        third_id = dbc.Nav(
+                )
+            third_id = dbc.Nav(
                 [
                     dbc.Col(
                         dbc.Table(html.Div(id=id3, children=[])),
@@ -81,8 +103,27 @@ def create_sidebar(id1, id2=None, id3=None):
                 vertical=True,
                 pills=True,
                 navbar_scroll=True,
-            )
-
+                )
+        elif id3=="select_specific":
+            tittle_third_id= dbc.Row(
+                [
+                    html.P(
+                        "Selecciones Opción: ",
+                        className="problematica",
+                    ),
+                ],
+                align="center",
+                )
+            third_id = dbc.Nav(
+                [
+                    dbc.Col(
+                        dbc.Table(html.Div(id=id3, children=[])),
+                    ),
+                ],
+                vertical=True,
+                pills=True,
+                navbar_scroll=True,
+                )
 
 
     return html.Div(
