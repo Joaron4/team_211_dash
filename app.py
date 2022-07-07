@@ -94,6 +94,7 @@ sidebar = html.Div(
         html.Br(),
         dbc.DropdownMenu(
             [dbc.DropdownMenuItem(dbc.NavLink("Violencia de género", active=True, href="/")),
+             dbc.DropdownMenuItem(dbc.NavLink("SISBEN IV", active=True, href="/sisben")),
              dbc.DropdownMenuItem(dbc.NavLink("crimenes", active=True, href="/crimes"))],
             label="Problemas",
             nav=True,
