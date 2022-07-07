@@ -6,7 +6,8 @@ import pandas as pd
 from dash_labs.plugins import register_page   
 import plotly.express as px 
 import json
-bmanga = json.load(open('./data/barrios.geojson','r'))
+from sidebar import create_sidebar
+bmanga = json.load(open('./data/barrios.geojson','r',encoding='utf-8'))
 
 register_page(__name__, path="/comportamientos")
 
@@ -23,8 +24,8 @@ row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
 
 table_body = [html.Tbody([row1,  row4])]
 
-# ----------------------------------
-
+# ----------SIDEBAR------------------------
+sidebar = create_sidebar('select_chapt1', 'loqeusea')
 
 # Build App
 SIDEBAR_STYLE = {
@@ -78,16 +79,7 @@ content = html.Div(
     [
     	
     	html.P('Seleccione Capítulo:', className = 'fix_label', style = {'color': 'black'}),
-    	dcc.Dropdown(id = 'select_chapt',
-                         multi = False,
-                         clearable = True,
-                         disabled = False,
-                         style = {'display': True},
-                         placeholder = 'Select Option',
-                         options = [{'label':str(b),'value':b} for b in sorted(df['CAPT'].unique())], 
-                         className = 'dcc_compon'
-                            
-                            ),
+    	
         html.Br(),
     	
     	dcc.Slider(2017, 2021, 1,
@@ -113,7 +105,7 @@ layout = html.Div(
     [   dcc.Store(id="stored-data_mc", data=df1),
         dbc.Row(
             [
-                
+                dbc.Col(sidebar, width=3, align="left"),
                 dbc.Col(
                     [
                         html.Br(),
@@ -140,6 +132,21 @@ layout = html.Div(
         ),
     ]
 )
+@callback(Output("select_chapt1", "children"), Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return (
+        dcc.Dropdown(id = 'select_chapt',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         placeholder = 'Select Option',
+                         options = [{'label':str(b),'value':b} for b in sorted(df['CAPT'].unique())], 
+                         className = 'dcc_compon'
+                            
+                            ),
+    )
 
 @callback(
     

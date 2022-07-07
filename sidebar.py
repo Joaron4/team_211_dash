@@ -1,13 +1,39 @@
 from dash import Dash, callback, html, dcc
 
 import dash_bootstrap_components as dbc
+from matplotlib.pyplot import title
 
 # ------------SIDEBAR-------------------------------
-def create_sidebar(id1, id2):
+def create_sidebar(id1, id2=None, id3=None):
     """Creates a sidebar
     arg1(id1): the callback dropdown id
     arg1(id2): the callback dropdown id
     return sidebar"""
+
+    title_second_id= html.Div()
+    second_id = html.Div()
+
+    if id2 != None:
+        print('FUNBCIONA---------')
+        title_second_id= dbc.Row(
+                [
+                    html.P(
+                        "Problemática",
+                        className="problematica",
+                    ),
+                ],
+                align="center",
+            )
+        second_id = dbc.Nav(
+                [
+                    dbc.Col(
+                        dbc.Table(html.Div(id=id2, children=[])),
+                    ),
+                ],
+                vertical=True,
+                pills=True,
+                navbar_scroll=True,
+            )
     return html.Div(
         [
             html.H2(
@@ -37,6 +63,9 @@ def create_sidebar(id1, id2):
                     dbc.DropdownMenuItem(
                         dbc.NavLink("crimenes", active=True, href="/crimes")
                     ),
+                    dbc.DropdownMenuItem(dbc.NavLink("Comportamientos contrarios a la convivencia", active=True, href="/comportamientos")),
+                    dbc.DropdownMenuItem(dbc.NavLink("Habitantes de calle", active=True, href="/chc"))
+
                 ],
                 label="Problemas",
                 nav=True,
@@ -65,25 +94,8 @@ def create_sidebar(id1, id2):
                 style={"width": "95%", "margin": "auto", "background-color": "black"}
             ),
             html.Br(),
-            dbc.Row(
-                [
-                    html.P(
-                        "Problemática",
-                        className="problematica",
-                    ),
-                ],
-                align="center",
-            ),
-            dbc.Nav(
-                [
-                    dbc.Col(
-                        dbc.Table(html.Div(id=id2, children=[])),
-                    ),
-                ],
-                vertical=True,
-                pills=True,
-                navbar_scroll=True,
-            ),
+            title_second_id,
+            second_id,
             html.Br(),
             html.Br(),
             html.Br(),
