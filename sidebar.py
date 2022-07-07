@@ -56,10 +56,10 @@ def create_sidebar(id1, id2=None, id3=None):
                 style={"width": "95%", "margin": "auto", "background-color": "black"}
             ),
             html.Br(),
-            dbc.DropdownMenu(
+            dbc.DropdownMenu( 
                 [
                     dbc.DropdownMenuItem(
-                        dbc.NavLink("Violencia de género", active=True, href="/")
+                        dbc.NavLink("Violencia de género e intrafamiliar", active=True, href="/")
                     ),
                     dbc.DropdownMenuItem(
                         dbc.NavLink("crimenes", active=True, href="/crimes")
@@ -68,20 +68,18 @@ def create_sidebar(id1, id2=None, id3=None):
                     dbc.DropdownMenuItem(dbc.NavLink("Habitantes de calle", active=True, href="/chc"))
 
                 ],
-                label="Problemas",
+                
+                label="Problemas alerta temprana",
                 nav=True,
-                className="dropdown-item btn btn-danger",
+                toggle_style={"color":"black","text-align":"center"}
+                
             ),
+            html.Br(),
             html.Hr(
                 style={"width": "95%", "margin": "auto", "background-color": "black"}
             ),
-            html.Br(),
-            dbc.Row(
-                [
-                    html.P("Enfoque poblacional", className="problematica"),
-                ],
-                align="center",
-            ),
+            html.Br(), 
+            html.P("Enfoque poblacional", className="problematica"),
             dbc.Nav(
                 [
                     dbc.Col(

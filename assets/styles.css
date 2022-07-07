@@ -10,7 +10,7 @@ body {
     top: 0;
     left: 0;
     bottom: 0;
-    height: auto;
+    height: 100%;
     margin: 0;
     padding: 0px;
     overflow-x: hidden;
@@ -18,11 +18,6 @@ body {
     background-color: #2EA18C;
 }
 
-#SIDEBAR_RADIOS {
-    align-items: center;
-    padding: 1%;
-    margin: 1%;
-}
 
 .btn-outline-primary {
 
@@ -104,6 +99,12 @@ body {
 }
 
 .barplot_barrios {
-    width: inherit;
-    height: inherit;
+    width: 200;
+    height: 200;
+}
+
+.my_buc_map {
+    width: 60%;
+    height: 60%;
+
 }
