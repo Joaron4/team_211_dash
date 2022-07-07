@@ -26,9 +26,19 @@ lista_conducta = sorted(df['conducta'].unique())
 lista_conducta.insert(0,"TOTAL DELITOS")
 
 table_header = [
-    html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
+    html.Thead(html.Tr([html.Th("Gráficas de Barras")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
 
+#-------------------TABLE--------------------------
+row1 = html.Tr(
+    [html.Td(dcc.Graph(id="the_graph"))] #Graph1
+)
+
+row4 = html.Tr(
+    [html.Td([dcc.Graph(id="the_graph_two")]) ]#barplot
+)
+
+table_body = [html.Tbody([row1, row4])]
 
 
 #---------SIDEBAR-----------------------
@@ -134,14 +144,11 @@ layout = html.Div(
                             [
                                 dbc.Col(content),
                                 dbc.Col(
-                                    dbc.Table(
-                                        dcc.Graph(id='the_graph', figure={}),
-                                    ),
-                                    style=TABLE_STYLE,
-                                ),
-                                dbc.Col(
-                                    dbc.Table(
-                                        dcc.Graph(id='the_graph_two', figure={}),
+                                dbc.Table(
+                                        table_header + table_body,
+                                        class_name="table table-bordered border-danger",
+                                        bordered=False,
+                                        responsive=True,
                                     ),
                                     style=TABLE_STYLE,
                                 )
@@ -258,7 +265,7 @@ def update_barchart(year,edad):
         data_frame=dgg,
         x=dgg["barrio"],
         y=(dgg['cantidad de delitos']/dgg['cantidad de delitos'].sum())*100,
-        title="Los barrios donde hay mas victimas (% porcentualmente) con la edad: "+edad,
+        title="Barrios con mas victimas (%) con edad: "+edad,
         color=dgg["barrio"],
         color_discrete_sequence=["#cc9c00", "#fcc100", "#ffce2e", "#ffd95f", "#ffe590"]
         )
@@ -285,7 +292,7 @@ def update_barchart_two(year,genero):
         data_frame=dg,
         x=dg["barrio"],
         y=dg['cantidad de delitos'],
-        title="Los barrios donde hay mas victimas (% porcentualmente) con el género: "+genero,
+        title="Barrios con más victimas del género: "+genero,
         color=dg["barrio"],
         color_discrete_sequence=["#283016", "#51612d", "#7a9243", "#9fb865", "#bdce96"]
         )
