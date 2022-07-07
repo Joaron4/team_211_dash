@@ -1,4 +1,4 @@
-from matplotlib.pyplot import figure
+from matplotlib.pyplot import figure, ylabel
 from dash import  callback, html, dcc, Input, Output, MATCH, ALL
 import dash_bootstrap_components as dbc
 import dash.dependencies as dd
@@ -29,13 +29,11 @@ table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
 
-# row1 =  html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
-# row4 = html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
-# table_body = [html.Tbody([row1,  row4])]
+
 
 #---------SIDEBAR-----------------------
 
-sidebar = create_sidebar_crimes('select_conducta',"select_variable")
+sidebar = create_sidebar_crimes('select_conducta',"select_edad","select_genero")
 
 
 # -------------------------------------
@@ -89,9 +87,9 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 
 #---------------------MAPA-----------------------
 content = html.Div(
-    [
-    html.P('Seleccione el tipo de delito:', className = 'fix_label', style = {'color': 'black'}),    
-        
+    [    
+
+
         html.Br(),
     	
     	dcc.Slider(2010, 2021, 1,
@@ -137,10 +135,17 @@ layout = html.Div(
                                 dbc.Col(content),
                                 dbc.Col(
                                     dbc.Table(
-                                        dcc.Graph(id='the_graph', figure={})
+                                        dcc.Graph(id='the_graph', figure={}),
                                     ),
                                     style=TABLE_STYLE,
                                 ),
+                                dbc.Col(
+                                    dbc.Table(
+                                        dcc.Graph(id='the_graph_two', figure={}),
+                                    ),
+                                    style=TABLE_STYLE,
+                                )
+                                ,
                             ]
                         ),
                     ]
@@ -171,6 +176,38 @@ def populate_dropdownvalues(data):
                             ),
     )
 
+@callback(Output("select_edad", "children"), Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return (
+        dcc.Dropdown(id="select_edad",
+                            multi=False,
+                            clearable = True,
+                            disabled = False,
+                            style = {'display': True},
+                            placeholder = 'Select Option',
+                            value="05. Adultez",
+                            options=[{'label':str(b),'value':b} for b in lista_edad],
+                            className = 'dcc_compon'
+                            ),
+    )
+
+@callback(Output("select_genero", "children"), Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return (
+        dcc.Dropdown(id="select_genero",
+                            multi=False,
+                            clearable = True,
+                            disabled = False,
+                            style = {'display': True},
+                            placeholder = 'Select Option',
+                            value="FEMENINO",
+                            options=[{'label':str(b),'value':b} for b in lista_genero],
+                            className = 'dcc_compon'
+                            ),
+    )
+
 
 #--------------CALLBACKS FOR MAP---------------------
 
@@ -186,6 +223,7 @@ def update_graph(year,conducta):
         dff = dff.groupby(["ano","barrio"]).sum().reset_index()
         dff = dff[(dff["ano"] == year)]
     else:
+        dff = dff.groupby(["ano","barrio","conducta"]).sum().reset_index()
         dff = dff[(dff["ano"] == year) & (dff["conducta"] == conducta )]
 
     # Plotly Express
@@ -206,37 +244,50 @@ def update_graph(year,conducta):
 
     Output(component_id='the_graph', component_property='figure'),
     Input(component_id='my_slider', component_property='value'),
-    Input(component_id='select_conducta', component_property='value')
+    Input(component_id='select_edad', component_property='value')
 )
 
-def update_barchart(year,conducta):   
+def update_barchart(year,edad):   
+    
     dgg = df.copy()
-    if conducta=="TOTAL DELITOS":
-        dgg = dgg.groupby(["ano","barrio"]).sum().reset_index()
-        dgg = dgg[(dgg["ano"] == year)]
-        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+    dgg = dgg.groupby(["barrio","ano","curso_de_vida"]).size().to_frame("cantidad de delitos").reset_index()
+    dgg = dgg[(dgg["ano"] == year) & (dgg["curso_de_vida"] == edad )]
+    dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+    # Plotly Express
+    barchart=px.bar(
+        data_frame=dgg,
+        x=dgg["barrio"],
+        y=(dgg['cantidad de delitos']/dgg['cantidad de delitos'].sum())*100,
+        title="Los barrios donde hay mas victimas (% porcentualmente) con la edad: "+edad,
+        color=dgg["barrio"],
+        color_discrete_sequence=["#cc9c00", "#fcc100", "#ffce2e", "#ffd95f", "#ffe590"]
+        )
 
-        # Plotly Express
-        barchart=px.bar(
-            data_frame=dgg,
-            x=dgg["barrio"],
-            y=dgg['cantidad de delitos'],
-            title="Los cinco barrios con mayor casos de: "+conducta,
-            color=dgg["barrio"],
-            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
-            )
+    return (barchart)
 
-    else:
-        dgg = dgg[(dgg["ano"] == year) & (dgg["conducta"] == conducta )]
-        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
-        # Plotly Express
-        barchart=px.bar(
-            data_frame=dgg,
-            x=dgg["barrio"],
-            y=dgg['cantidad de delitos'],
-            title="Los cinco barrios con mayor casos de: "+conducta,
-            color=dgg["barrio"],
-            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
-            )
+#--------------CALLBACKS FOR PIE CHART---------------------
+
+@callback(
+
+    Output(component_id='the_graph_two', component_property='figure'),
+    Input(component_id='my_slider', component_property='value'),
+    Input(component_id='select_genero', component_property='value')
+)
+
+def update_barchart_two(year,genero):   
+    
+    dg = df.copy()
+    dg = dg.groupby(["barrio","ano","genero"]).size().to_frame("cantidad de delitos").reset_index()
+    dg = dg[(dg["ano"] == year) & (dg["genero"] == genero )]
+    dg = dg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+    # Plotly Express
+    barchart=px.bar(
+        data_frame=dg,
+        x=dg["barrio"],
+        y=dg['cantidad de delitos'],
+        title="Los barrios donde hay mas victimas (% porcentualmente) con el género: "+genero,
+        color=dg["barrio"],
+        color_discrete_sequence=["#283016", "#51612d", "#7a9243", "#9fb865", "#bdce96"]
+        )
 
     return (barchart)
