@@ -9,9 +9,11 @@ import pandas as pd
 from dash_labs.plugins import register_page
 import plotly.express as px
 import json
+
 from sidebar import create_sidebar
 
 bmanga = json.load(open("./data/barrios.geojson", "r", encoding="utf-8"))
+
 
 register_page(__name__, path="/")
 
