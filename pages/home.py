@@ -150,7 +150,7 @@ content = html.Div([
         dbc.Row([
             html.Br(),
             html.Div(id="description_title_text",style={"textAlign": "center", "color": "#2E7DA1"}),
-            html.Div(html.P(default_definition),id="description_text",)
+            html.Div(html.P(default_definition),id="description_text",style={ 'text-align': 'justify'})
         
             ])
         
