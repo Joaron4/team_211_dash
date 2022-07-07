@@ -32,7 +32,7 @@ table_body = [html.Tbody([row1,  row4])]
 
 #---------SIDEBAR-----------------------
 
-sidebar = create_sidebar('select_gender',"select_kind")
+sidebar = create_sidebar('select_gender',"select_kind","select_specific")
 
 
 # -------------------------------------
@@ -175,7 +175,26 @@ def populate_dropdownvalues(data):
 
         )
 
+@callback(Output('select_specific', "children"),
+    Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return(
+            dcc.Dropdown(id = 'select_specific',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         placeholder = 'Select Specific',
+                         options = [], className = 'dcc_compon'),
+        )
 
+@callback(Output('select_specific', "options"),
+    Input('select_gender', 'value'),
+    Input('select_kind', 'value'))
+def get_country_options(genero, kind):
+    dff = df[(df['GENERO'] == genero) & (df['kind'] == kind)]
+    return [{'label': i, 'value': i} for i in dff['clave'].unique()]  
 
 #------------------CALLBACK FOR MAP--------------------
 
