@@ -1,84 +1,223 @@
-from dash import callback, html, dcc, Input, Output, MATCH, ALL
+from matplotlib.pyplot import figure
+from dash import  callback, html, dcc, Input, Output, MATCH, ALL
 import dash_bootstrap_components as dbc
-
+import dash.dependencies as dd
+from io import BytesIO
+import base64
 import json
 import pandas as pd
-from dash_labs.plugins import register_page
-import plotly.express as px
-import json
-from sidebar import create_sidebar
+from dash_labs.plugins import register_page   
+import plotly.express as px 
 
 
+bmanga = json.load(open('./data/barrios.geojson','r',encoding="utf-8"))
 register_page(__name__, path="/crimes")
-# ---------preparing the dataset------------------------------
-delitos = pd.read_csv("./data/delitos_clean.csv", encoding="utf-8")
-delitos_group = (
-    pd.DataFrame(delitos.groupby(["latitud", "longitud", "conducta"]).size())
-    .rename(columns={0: "count"})
-    .reset_index()
-)
-delitos1 = delitos_group.to_dict()
-sidebar = create_sidebar("drop_container_crimes1", "drop_container_crimes2")
-# ---------------------------LAYOUT-------------------------------
-layout = html.Div(
+
+delitos = pd.read_csv('./data/delitos_final.csv')
+
+df = delitos.groupby(["ano","barrios_hecho","conducta"]).size().to_frame("cantidad de delitos").reset_index().rename(columns={"barrios_hecho":'barrio'})
+df1 = df.to_dict()
+
+lista = sorted(df['conducta'].unique())
+lista.insert(0,"TOTAL DELITOS")
+
+table_header = [
+    html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
+]
+
+# row1 =  html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
+# row4 = html.Tr([html.Td("lo que sea"), html.Td("Giovanny")])
+# table_body = [html.Tbody([row1,  row4])]
+
+
+# -------------------------------------
+
+# Build App
+
+SIDEBAR_STYLE = {
+    "top": 0,
+    "left": 0,
+    "bottom": 0,
+    "height": "100%",
+    "margin": "auto",
+    "padding": "0px",
+    "margin": "auto",
+    "border": "5px black",
+    "background-color": "#2EA18C",
+}
+
+SIDEBAR_SQUARES = {
+    "top": 0,
+    "left": 0,
+    "bottom": 0,
+    "height": 100,
+    "width": '99%',
+    "padding": "5%",
+    "margin": "auto",
+    "border": "5px black",
+    "background-color": "WHITE",
+    'flex-flow': 'column',
+    "display":"flex",
+    'overflowY': 'auto',
+    'overflowX': 'hidden'
+
+}
+
+CONTENT_STYLE = {
+    "margin-left": 0,
+    "margin-right": 0,
+    "padding": "5%",
+}
+
+TABLE_STYLE = {
+    "margin-left": 0,
+    "margin-right": 0,
+    "padding": "5%",
+    "text-color": "#2E7DA1",
+    
+}
+
+blackbold={'color':'black', 'font-weight': 'bold'}
+
+#---------------------MAPA-----------------------
+content = html.Div(
     [
-        dcc.Store(id="stored-data1", data=delitos1),
+    html.P('Seleccione el tipo de delito:', className = 'fix_label', style = {'color': 'black'}),    
+        dcc.Dropdown(id="select_conducta",
+                            multi=False,
+                            clearable = True,
+                            disabled = False,
+                            style = {'display': True},
+                            placeholder = 'Select Option',
+                            value="TOTAL DELITOS",
+                            options=[{'label':str(b),'value':b} for b in lista],
+                            className = 'dcc_compon'
+                            ),
+        html.Br(),
+    	
+    	dcc.Slider(2010, 2021, 1,
+               marks = {2010 : '2010',
+                       2011 : '2011',
+                       2012 : '2012',
+                       2013 : '2013',
+                       2014 : '2014',
+                       2015 : '2015',
+                       2016 : '2016',
+                       2017 : '2017',
+                       2018 : '2018',
+                       2019 : '2019',
+                       2020 : '2020',
+                       2021 : '2021'
+                       },
+               value=2010,
+               id='my_slider'
+    ),
+
+        dcc.Graph(id='my_crime_map',figure={}) 
+    ],
+    style=CONTENT_STYLE,
+)
+ 
+
+layout = html.Div(
+    [   dcc.Store(id="stored-data", data=df1),
         dbc.Row(
             [
-                dbc.Col(sidebar, width=3, align="left"),
                 dbc.Col(
-                    dcc.Graph(id="scatter_buc"),
+                    [
+                        html.Br(),
+                        # -----------------TITULO-------------------------
+                        html.H1(
+                            "Bucaramanga",
+                            style={"textAlign": "center", "color": "#2E7DA1"},
+                        ),
+                        # ------------------TABLA-------------------------
+                        dbc.Row(
+                            [
+                                dbc.Col(content),
+                                dbc.Col(
+                                    dbc.Table(
+                                        dcc.Graph(id='the_graph', figure={})
+                                    ),
+                                    style=TABLE_STYLE,
+                                ),
+                            ]
+                        ),
+                    ]
                 ),
             ]
         ),
+
+        
+
     ]
 )
-# --------------------------DROPDOWNS--------------------------
 
+#--------------CALLBACKS FOR MAP---------------------
 
-@callback(Output("drop_container_crimes1", "children"), Input("stored-data1", "data"))
-def populate_dropdownvalues(data):
-    dff = pd.DataFrame(data)
-    return (
-        dcc.Dropdown(
-            id="crimes_labels",
-            options=[
-                {"label": str(b).lower().capitalize(), "value": b}
-                for b in sorted(dff["conducta"][dff["conducta"].notnull()].unique())
-            ],
-            value=[
-                b for b in sorted(dff["conducta"][dff["conducta"].notnull()].unique())
-            ],
-            multi=False,
-        ),
-    )
-
-
-# -----------------------MAP-------------------------------------------
 @callback(
-    Output(component_id="scatter_buc", component_property="figure"),
-    Input(component_id="crimes_labels", component_property="value"),
-)
-def update_graph(nat):
-    print("------------------>", nat)
 
-    df = delitos_group.copy()
+    Output(component_id='my_crime_map', component_property='figure'),
+    Input(component_id='my_slider', component_property='value'),
+    Input(component_id='select_conducta', component_property='value')
+)
+def update_graph(year,conducta):   
+    dff = df.copy()
+    if conducta=="TOTAL DELITOS":
+        dff = dff.groupby(["ano","barrio"]).sum().reset_index()
+        dff = dff[(dff["ano"] == year)]
+    else:
+        dff = dff[(dff["ano"] == year) & (dff["conducta"] == conducta )]
 
     # Plotly Express
+    fig =px.choropleth_mapbox(dff, geojson=bmanga, color= 'cantidad de delitos',
+                    locations="barrio", featureidkey= "properties.NOMBRE",
+                    mapbox_style="carto-positron",
+    center={"lat": 7.12539, "lon": -73.1198},
+    zoom=11.5,
+    opacity=0.5)
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    
+    return  fig
 
-    fig = px.scatter_mapbox(
-        df[df["conducta"] == nat],
-        lat="latitud",
-        lon="longitud",
-        mapbox_style="carto-positron",
-        center={"lat": 7.12539, "lon": -73.1198},  # 7.12539, -73.1198
-        zoom=11.5,
-        opacity=0.5,
-        size="count",
-        color="conducta",
-        hover_name="conducta",
-        hover_data=["count", "longitud", "latitud"],
-    )
+#--------------CALLBACKS FOR BARCHART---------------------
 
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    return fig
+@callback(
+
+    Output(component_id='the_graph', component_property='figure'),
+    Input(component_id='my_slider', component_property='value'),
+    Input(component_id='select_conducta', component_property='value')
+)
+
+def update_barchart(year,conducta):   
+    dgg = df.copy()
+    if conducta=="TOTAL DELITOS":
+        dgg = dgg.groupby(["ano","barrio"]).sum().reset_index()
+        dgg = dgg[(dgg["ano"] == year)]
+        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+
+        # Plotly Express
+        barchart=px.bar(
+            data_frame=dgg,
+            x=dgg["barrio"],
+            y=dgg['cantidad de delitos'],
+            title="Los cinco barrios con mayor casos de: "+conducta,
+            color=dgg["barrio"],
+            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
+            )
+
+    else:
+        dgg = dgg[(dgg["ano"] == year) & (dgg["conducta"] == conducta )]
+        dgg = dgg.sort_values(by="cantidad de delitos", ascending=False).head(5)
+        # Plotly Express
+        barchart=px.bar(
+            data_frame=dgg,
+            x=dgg["barrio"],
+            y=dgg['cantidad de delitos'],
+            title="Los cinco barrios con mayor casos de: "+conducta,
+            color=dgg["barrio"],
+            color_discrete_sequence=["red", "green", "blue", "goldenrod", "magenta"]
+            )
+
+    return (barchart)

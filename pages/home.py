@@ -97,7 +97,9 @@ blackbold = {"color": "black", "font-weight": "bold"}
 
 # ---------------------MAPA-----------------------
 content = html.Div(
+
     [dcc.Graph(id="my_buc_map", figure={})],
+
     style=CONTENT_STYLE,
 )
 
@@ -147,11 +149,13 @@ def plot_wordcloud(data):
 
 # ---------MAP--------------------
 @callback(
+
     Output(component_id="my_buc_map", component_property="figure"),
     Input(component_id="select_ind", component_property="value"),
     Input(component_id="select_nat", component_property="value"),
 )
 def update_graph(ind, nat):
+
 
     dff = df.copy()
     dff = dff = (
@@ -242,6 +246,7 @@ def populate_dropdownvalues(data):
 @callback(Output("dropdown-container2", "children"), Input("stored-data", "data"))
 def populate_dropdownvalues(data):
     dff = pd.DataFrame(data)
+
     return (
         dcc.Dropdown(
             id="select_nat",
@@ -274,3 +279,4 @@ def make_image(ind):
 )
 def update_output_div(ind):
     return "Principales problemáticas que afectan a:" + str(ind)
+
