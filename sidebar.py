@@ -112,7 +112,7 @@ def create_sidebar(id1, id2=None, id3=None):
 
 #-----------------SIDEBARPARACRIMES------------------
 
-def create_sidebar_crimes(id1, id2, id3=None):
+def create_sidebar_crimes(id1, id2, id3):
     """Creates a sidebar
     arg1(id1): the callback dropdown id
     arg1(id2): the callback dropdown id
@@ -121,12 +121,15 @@ def create_sidebar_crimes(id1, id2, id3=None):
     title_second_id= html.Div()
     second_id = html.Div()
 
+    tittle_third_id = html.Div()
+    third_id = html.Div()
+
     if id2 != None:
         
         title_second_id= dbc.Row(
                 [
                     html.P(
-                        "Clasificacion",
+                        "Por edad de la victima",
                         className="problematica",
                     ),
                 ],
@@ -143,6 +146,30 @@ def create_sidebar_crimes(id1, id2, id3=None):
                 navbar_scroll=True,
             )
     
+    if id3 != None:
+        
+        tittle_third_id= dbc.Row(
+                [
+                    html.P(
+                        "Por género de la victima",
+                        className="problematica",
+                    ),
+                ],
+                align="center",
+            )
+        third_id = dbc.Nav(
+                [
+                    dbc.Col(
+                        dbc.Table(html.Div(id=id3, children=[])),
+                    ),
+                ],
+                vertical=True,
+                pills=True,
+                navbar_scroll=True,
+            )
+
+
+
     return html.Div(
         [
             html.H2(
@@ -186,7 +213,7 @@ def create_sidebar_crimes(id1, id2, id3=None):
             html.Br(),
             dbc.Row(
                 [
-                    html.P("Variable de Interes", className="problematica"),
+                    html.P("Por tipo de Delitos", className="problematica"),
                 ],
                 align="center",
             ),
@@ -205,6 +232,8 @@ def create_sidebar_crimes(id1, id2, id3=None):
             html.Br(),
             title_second_id,
             second_id,
+            tittle_third_id,
+            third_id,
             html.Br(),
             html.Br(),
             html.Br(),
