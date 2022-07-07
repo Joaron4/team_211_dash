@@ -14,7 +14,7 @@ def create_sidebar(id1, id2=None, id3=None):
     second_id = html.Div()
 
     if id2 != None:
-        print('FUNBCIONA---------')
+        
         title_second_id= dbc.Row(
                 [
                     html.P(

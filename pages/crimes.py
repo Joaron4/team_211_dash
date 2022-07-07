@@ -13,7 +13,7 @@ import plotly.express as px
 bmanga = json.load(open('./data/barrios.geojson','r',encoding="utf-8"))
 register_page(__name__, path="/crimes")
 
-delitos = pd.read_csv('./data/delitos_final.csv')
+delitos = pd.read_csv('./data/delitos_final.csv',encoding='utf-8')
 
 df = delitos.groupby(["ano","barrios_hecho","conducta"]).size().to_frame("cantidad de delitos").reset_index().rename(columns={"barrios_hecho":'barrio'})
 df1 = df.to_dict()
