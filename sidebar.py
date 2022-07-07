@@ -112,7 +112,7 @@ def create_sidebar(id1, id2=None, id3=None):
 
 #-----------------SIDEBARPARACRIMES------------------
 
-def create_sidebar_crimes(id1, id2=None, id3=None):
+def create_sidebar_crimes(id1, id2, id3=None):
     """Creates a sidebar
     arg1(id1): the callback dropdown id
     arg1(id2): the callback dropdown id
@@ -126,7 +126,7 @@ def create_sidebar_crimes(id1, id2=None, id3=None):
         title_second_id= dbc.Row(
                 [
                     html.P(
-                        "Problemática",
+                        "Clasificacion",
                         className="problematica",
                     ),
                 ],
@@ -186,7 +186,7 @@ def create_sidebar_crimes(id1, id2=None, id3=None):
             html.Br(),
             dbc.Row(
                 [
-                    html.P("Variable de interes", className="problematica"),
+                    html.P("Variable de Interes", className="problematica"),
                 ],
                 align="center",
             ),
