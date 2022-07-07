@@ -85,10 +85,10 @@ def create_sidebar(id1, id2=None, id3=None):
             dbc.DropdownMenu(
                 [
                     dbc.DropdownMenuItem(
-                        dbc.NavLink("Violencia de género", active=True, href="/")
+                        dbc.NavLink("Violencia de género e intrafamiliar", active=True, href="/")
                     ),
                     dbc.DropdownMenuItem(
-                        dbc.NavLink("crimenes", active=True, href="/crimes")
+                        dbc.NavLink("Crimenes", active=True, href="/crimes")
                     ),
                     dbc.DropdownMenuItem(dbc.NavLink("Comportamientos contrarios a la convivencia", active=True, href="/comportamientos")),
                     dbc.DropdownMenuItem(dbc.NavLink("Habitantes de calle", active=True, href="/chc"))
