@@ -9,6 +9,7 @@ import pandas as pd
 from dash_labs.plugins import register_page   
 import plotly.express as px 
 import json
+from sidebar import create_sidebar
 
 
 
@@ -29,8 +30,12 @@ row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
 
 table_body = [html.Tbody([row1,  row4])]
 
-# ----------------------------------
+#---------SIDEBAR-----------------------
 
+sidebar = create_sidebar('select_gender',"select_kind","select_specific")
+
+
+# -------------------------------------
 
 # Build App
 SIDEBAR_STYLE = {
@@ -82,42 +87,7 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 #---------------------MAPA-----------------------
 content = html.Div(
     [    
-    html.P('Seleccione género:', className = 'fix_label', style = {'color': 'black'}),
-            dcc.Dropdown(id = 'select_gender',
-                         multi = False,
-                         clearable = True,
-                         disabled = False,
-                         style = {'display': True},
-                         value = 'Masculino',
-                         placeholder = 'Select Option',
-                         options = [{'label': c, 'value': c}
-                                    for c in df['GENERO'].unique()], className = 'dcc_compon'),
 
-    
-    html.Br(),
-    
-    html.P('Seleccione aspecto:', className = 'fix_label', style = {'color': 'black'}),
-            dcc.Dropdown(id = 'select_kind',
-                         multi = False,
-                         clearable = True,
-                         disabled = False,
-                         style = {'display': True},
-                         value = 'Razón por la cual vive en la calle',
-                         placeholder = 'Select Option',
-                         options = [{'label': c, 'value': c}
-                                    for c in df['kind'].unique()], className = 'dcc_compon'),
-    
-    html.Br(),
-    
-    html.P('Seleccione opción:', className = 'fix_label', style = {'color': 'black'}),
-            dcc.Dropdown(id = 'select_specific',
-                         multi = False,
-                         clearable = True,
-                         disabled = False,
-                         style = {'display': True},
-                         placeholder = 'Select Specific',
-                         options = [], className = 'dcc_compon'),
-    
 	html.Br(),
         
         dcc.Graph(id='my_chc_map',figure={}) ,
@@ -130,10 +100,10 @@ content = html.Div(
  
 
 layout = html.Div(
-    [   dcc.Store(id="stored-data", data=df1),
+    [   dcc.Store(id="stored-data_mc", data=df1),
         dbc.Row(
             [
-                
+                dbc.Col(sidebar, width=3, align="left"),
                 dbc.Col(
                     [
                         html.Br(),
@@ -172,15 +142,59 @@ def plot_wordcloud(data):
     
 #------------------CALLBACKS FOR DROPDOWNS--------------------
 
-@callback(Output('select_specific', 'options'),
-    Input('select_gender', 'value'),
-    Input('select_kind', 'value')
+@callback(Output('select_gender', "children"),
+    Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return(
+            dcc.Dropdown(id = 'select_gender',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         value = 'Masculino',
+                         placeholder = 'Select Option',
+                         options = [{'label': c, 'value': c}
+                                    for c in df['GENERO'].unique()], className = 'dcc_compon'),
     )
+
+@callback(Output('select_kind', "children"),
+    Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return(
+            dcc.Dropdown(id = 'select_kind',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         value = 'Razón por la cual vive en la calle',
+                         placeholder = 'Select Option',
+                         options = [{'label': c, 'value': c}
+                                    for c in df['kind'].unique()], className = 'dcc_compon'),
+
+        )
+
+@callback(Output('select_specific', "children"),
+    Input("stored-data_mc", "data"))
+def populate_dropdownvalues(data):
+    dff = pd.DataFrame(data)
+    return(
+            dcc.Dropdown(id = 'select_specific',
+                         multi = False,
+                         clearable = True,
+                         disabled = False,
+                         style = {'display': True},
+                         placeholder = 'Select Specific',
+                         options = [], className = 'dcc_compon'),
+        )
+
+@callback(Output('select_specific', "options"),
+    Input('select_gender', 'value'),
+    Input('select_kind', 'value'))
 def get_country_options(genero, kind):
-
     dff = df[(df['GENERO'] == genero) & (df['kind'] == kind)]
-    return [{'label': i, 'value': i} for i in dff['clave'].unique()]
-
+    return [{'label': i, 'value': i} for i in dff['clave'].unique()]  
 
 #------------------CALLBACK FOR MAP--------------------
 
@@ -238,3 +252,23 @@ def make_image(ind, gend):
 
 
 
+#-------------------------------------------
+
+    
+#     html.P('Seleccione opción:', className = 'fix_label', style = {'color': 'black'}),
+#             dcc.Dropdown(id = 'select_specific',
+#                          multi = False,
+#                          clearable = True,
+#                          disabled = False,
+#                          style = {'display': True},
+#                          placeholder = 'Select Specific',
+#                          options = [], className = 'dcc_compon'),
+
+# @callback(Output('select_specific', 'options'),
+#     Input('select_gender', 'value'),
+#     Input('select_kind', 'value')
+#     )
+# def get_country_options(genero, kind):
+
+#     dff = df[(df['GENERO'] == genero) & (df['kind'] == kind)]
+#     return [{'label': i, 'value': i} for i in dff['clave'].unique()]
