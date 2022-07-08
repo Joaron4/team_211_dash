@@ -161,8 +161,19 @@ def create_sidebar(id1, id2=None, id3=None):
                     "textAlign": "center",
                 },
             ),
-            html.P(
-                "Seleccione uno o más filtros para personalizar su búsqueda",
+            html.Hr(
+                style={"width": "95%", "margin": "auto", "background-color": "black"}
+            ),
+            html.H6(
+                "Este dashboard permite vizualizar, mediante georeferenciaciones y gráficas algunas de la problemáticas planteadas en la alerta temprana N° 28 de 2021",
+                className="lead",
+                style={"color": "white", "padding": "5%", "font-size": "1 vw"},
+            ),
+            html.Hr(
+                style={"width": "95%", "margin": "1%", "background-color": "black"}
+            ),
+            html.H6(
+                "Para utilizarlo, primero seleccione uno de los cinco problemas identificados en la alerta temprana y luego, usando los menus deplegables seleccione uno o más filtros para personalizar su búsqueda",
                 className="lead",
                 style={"color": "white", "padding": "5%", "font-size": "1 vw"},
             ),

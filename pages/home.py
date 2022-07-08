@@ -146,6 +146,7 @@ blackbold = {"color": "black", "font-weight": "bold"}
 # ---------------------MAPA-----------------------
 content = html.Div([
     dbc.Row([
+        html.H5('Total de ocurrencias agrupadas por barrio',style={"textAlign": "center", "color": "#2E7DA1"}),
         dbc.Row(dcc.Graph(id="my_buc_map", figure=default_map())),
         dbc.Row([
             html.Br(),
