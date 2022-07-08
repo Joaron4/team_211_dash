@@ -18,6 +18,9 @@ def create_sidebar(id1, id2=None, id3=None):
         first_title= html.P("Por tipo de Delitos", className="problematica")
     elif id1 == 'select_gender':
         first_title= html.P("Seleccione género: ", className="problematica")
+    elif id1 == 'dropdown_slct_barrios':
+        first_title= html.P("Filtro de barrios de Alerta Temprana", className="problematica")
+
     else:
         first_title= html.P("Enfoque poblacional", className="problematica")
     if id2 != None:
@@ -62,6 +65,25 @@ def create_sidebar(id1, id2=None, id3=None):
                     pills=True,
                     navbar_scroll=True,
                 )
+        elif id2 == 'dropdown_tempana':
+            title_second_id = dbc.Row(
+                    [
+                        html.P(
+                            "Grupos Resultado Encuesta SISBEN IV",
+                            className="problematica",
+                        ),
+                    ],
+                    align="center",
+                )
+            second_id =dcc.Dropdown(id="slct_barrios",
+                     options=[
+                         {"label": "Todos los barrios", "value": 1},
+                         {"label": "Solo barrios de alerta temprana", "value": 0}],
+                     multi=False,
+                     value=1,
+                     #style={'width': "90%","align-items":"center"},
+                     searchable=True
+                     )
         else:
             title_second_id= dbc.Row(
                     [
@@ -155,6 +177,7 @@ def create_sidebar(id1, id2=None, id3=None):
                     dbc.DropdownMenuItem(
                         dbc.NavLink("Crimenes", active=True, href="/crimes")
                     ),
+                    dbc.DropdownMenuItem(dbc.NavLink("SISBEN IV", active=True, href="/sisben")),
                     dbc.DropdownMenuItem(dbc.NavLink("Comportamientos contrarios a la convivencia", active=True, href="/comportamientos")),
                     dbc.DropdownMenuItem(dbc.NavLink("Habitantes de calle", active=True, href="/chc"))
 
