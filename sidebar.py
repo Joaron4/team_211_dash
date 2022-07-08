@@ -173,7 +173,7 @@ def create_sidebar(id1, id2=None, id3=None):
                 style={"width": "95%", "margin": "1%", "background-color": "black"}
             ),
             html.H6(
-                "Para utilizarlo, primero seleccione uno de los cinco problemas identificados en la alerta temprana en 'problemas alerta temprana' y luego, usando los menus deplegables seleccione uno o más filtros para personalizar su búsqueda",
+                "Para utilizarlo, primero seleccione uno de los cinco problemas identificados de la alerta temprana en 'problemas alerta temprana' y luego, usando los menus deplegables seleccione uno o más filtros para personalizar su búsqueda",
                 className="lead",
                 style={"color": "white", "padding": "5%", "font-size": "1 vw",'text-align': 'justify'},
             ),
