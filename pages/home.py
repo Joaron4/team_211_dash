@@ -393,5 +393,3 @@ def update_output_div(ind,nat):
         return html.P(default_definition)
     else:
         return html.P(str(definition[nat]).capitalize())
-
-#html.H3("Bucaramanga")
