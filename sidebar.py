@@ -20,11 +20,12 @@ def create_sidebar(id1, id2=None, id3=None):
         first_title= html.P("Seleccione género: ", className="problematica")
     elif id1 == 'dropdown_slct_barrios':
         first_title= html.P("Filtro de barrios de Alerta Temprana", className="problematica")
+    elif id1 == 'select_chapt1':
+        first_title= html.P("Cantidad de infractores", className="problematica")
 
     else:
         first_title= html.P("Enfoque poblacional", className="problematica")
     if id2 != None:
-        print('---------->',__name__)
         if id2 == 'select_edad':
             title_second_id= dbc.Row(
                     [

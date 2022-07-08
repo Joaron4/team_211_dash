@@ -223,6 +223,7 @@ def update_graph(ind, nat):
     fig = px.choropleth_mapbox(
         dff,
         geojson=bmanga,
+        title='Total de ocurrencias',
         color="count",
         locations="barrio",
         featureidkey="properties.NOMBRE",
@@ -230,7 +231,8 @@ def update_graph(ind, nat):
         center={"lat": 7.12539, "lon": -73.1198},  # 7.12539, -73.1198
         zoom=11.5,
         opacity=0.5,
-        height = 400
+        height = 400,
+        
     )
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})

@@ -7,6 +7,7 @@ from dash_labs.plugins import register_page
 import plotly.express as px 
 import json
 from sidebar import create_sidebar
+from data.definitions import default_definition, definition2
 bmanga = json.load(open('./data/barrios.geojson','r',encoding='utf-8'))
 
 register_page(__name__, path="/comportamientos")
@@ -18,9 +19,9 @@ df1 = df.to_dict()
 table_header = [
     html.Thead(html.Tr([html.Th("Principales problemáticas"), html.Th("Principales grupos poblacionales afectados")],style = {"text-align":"center","color":"#2E7DA1"}))
 ]
-row1 = html.Tr([html.Td(html.Img(src='https://lostripulantes5.files.wordpress.com/2021/07/wordcloud.png?w=750', width="100%",height='100%')), html.Td("")])
+row1 = html.Tr([html.Td(dcc.Graph(id="line_plot"),)])
 
-row4 = html.Tr([html.Td("lo que sea"), html.Td("Astra")])
+row4 = html.Tr([html.Td(html.P(default_definition),id="description_text_comportamientos",style={ 'text-align': 'justify'})])
 
 table_body = [html.Tbody([row1,  row4])]
 
@@ -120,12 +121,14 @@ layout = html.Div(
                                 dbc.Col(content),
                                 dbc.Col(
                                     dbc.Table(
-                                        dcc.Graph(id="line_plot"),
+                                        table_body,
+                                        responsive=True
                                     ),
                                     style=TABLE_STYLE,
                                 ),
                             ]
                         ),
+                        
                     ]
                 ),
             ]
@@ -182,6 +185,19 @@ def update_line_chart(chapter):
         x="AÑO_NUM", y="count", color='LOCALIDAD',
         title = chapter) 
     return fig    
+
+@callback(
+    Output(component_id="description_text_comportamientos", component_property="children"),
+    Input(component_id="select_chapt", component_property="value"),
+    
+)
+def update_output_div(chapt):
+    
+    if chapt not in definition2:
+        return html.P(default_definition)
+    else:
+        return html.P(str(definition2[chapt]))
+
     
     
     
