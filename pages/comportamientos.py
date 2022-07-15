@@ -79,8 +79,6 @@ blackbold={'color':'black', 'font-weight': 'bold'}
 content = html.Div(
     [
     	
-    	html.P('Seleccione Capítulo:', className = 'fix_label', style = {'color': 'black'}),
-    	
         html.Br(),
     	
     	dcc.Slider(2017, 2021, 1,
