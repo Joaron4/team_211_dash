@@ -1,5 +1,3 @@
-# team_211_dash
-
 #Early Warning Display
 
 This project was developed as part of the training program offered by the government of Colombia through Correlation One, during the 6th Cohort of DS4A training program.
