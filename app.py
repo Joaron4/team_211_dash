@@ -10,18 +10,10 @@ from dash.dependencies import Input, Output
 import gunicorn  # whilst your local machine's webserver doesn't need this, Heroku's linux webserver (i.e. dyno) does. I.e. This is your HTTP server
 from whitenoise import WhiteNoise  # for serving static files on Heroku
 import json
+import os
+import glob
+import polars as pl
 
-# Instantiate dash app
-violencia = pd.read_csv("./data/violencia_clean.csv")
-df = (
-    pd.DataFrame(
-        violencia[["comuna", "barrio", "def_naturaleza", "nom_actividad"]]
-        .groupby(["comuna", "barrio", "def_naturaleza", "nom_actividad"])
-        .size()
-    )
-    .rename(columns={0: "count"})
-    .reset_index()
-)
 
 app = Dash(
     __name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.themes.FLATLY]
@@ -53,13 +45,13 @@ navbar = dbc.Navbar(
                 [
                     dbc.Col(
                         html.Img(
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Escudo_de_Bucaramanga.svg/1200px-Escudo_de_Bucaramanga.svg.png",
+                            src="https://www.uexternado.edu.co/wp-content/uploads/2020/07/logo-uec.png",
                             height="30px",
                         )
                     ),
                     dbc.Col(
                         dbc.NavbarBrand(
-                            "Alcaldía de Bucaramanga",
+                            "Universidad Externado de Colombia",
                             style={
                                 "text-align": "left",
                                 "text-color": "white",
@@ -81,8 +73,6 @@ navbar = dbc.Navbar(
     color="#2EA18C",
     style=NAVBAR_STYLE,
 )
-
-
 
 
 app.layout = dbc.Container(
